@@ -83,6 +83,76 @@ class LocalStorageStorageAdapter extends StorageAdapter {
   }
 }
 
+class RatingInput {
+  constructor(disabled, initialRating = 5) {
+    this.disabled = disabled;
+    this.initialRating = initialRating;
+    this.ratingValue = initialRating;
+
+    this.element = document.createElement("div");
+    this.element.classList.add("rating-input");
+
+    this.render();
+  }
+
+  /**
+   * Sets the rating value
+   * @param {number} rating
+   */
+  setRating(rating) {
+    if (typeof rating !== "number" || rating < 1 || rating > 5) {
+      throw new Error(
+        "Invalid rating. Rating must be a number between 1 and 5."
+      );
+    }
+
+    this.ratingValue = rating;
+    this.render();
+  }
+
+  /**
+   * Handles the click event on a star input
+   * @param {Event} event
+   */
+  onStartClickHandler(event) {
+    event.preventDefault();
+
+    const starValue = event.target.value;
+    this.ratingValue = parseInt(starValue, 10);
+
+    this.render();
+  }
+
+  reset() {
+    this.setRating(this.initialRating);
+  }
+
+  /**
+   * Renders the rating input
+   */
+  render() {
+    this.element.innerHTML = "";
+
+    for (let i = 1; i <= 5; i++) {
+      const starInputElement = document.createElement("input");
+      starInputElement.classList.add("rating-input__star");
+      starInputElement.type = "checkbox";
+      starInputElement.name = "rating";
+      starInputElement.value = i;
+      starInputElement.defaultChecked = i <= this.ratingValue;
+      starInputElement.disabled = this.disabled;
+
+      starInputElement.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        this.onStartClickHandler(event);
+      });
+
+      this.element.appendChild(starInputElement);
+    }
+  }
+}
+
 class ReviewCard {
   /**
    * @param {{review: string, rating: number}} review
@@ -116,6 +186,10 @@ class ReviewCard {
     ratingElement.classList.add("review-card__rating");
     ratingElement.textContent = `${this.review.rating} / 5`;
 
+    const ratingStarElement = document.createElement("div");
+    const ratingInput = new RatingInput(true, this.review.rating);
+    ratingStarElement.appendChild(ratingInput.element);
+
     const removeButtonElement = document.createElement("button");
     removeButtonElement.classList.add("review-card__delete-button", "button");
     removeButtonElement.textContent = "Remove";
@@ -125,6 +199,7 @@ class ReviewCard {
 
     this.element.appendChild(reviewElement);
     this.element.appendChild(ratingElement);
+    this.element.appendChild(ratingStarElement);
     this.element.appendChild(removeButtonElement);
   }
 }
@@ -173,7 +248,9 @@ class ReviewList {
   updateAverageRating() {
     if (!this.averageRatingElement) return;
 
-    this.averageRatingElement.textContent = `${this.averageRating.toFixed(1)} / 5`;
+    this.averageRatingElement.textContent = `${this.averageRating.toFixed(
+      1
+    )} / 5`;
   }
 
   /**
@@ -252,12 +329,20 @@ const reviewList = new ReviewList(reviews, averageRatingElement);
 const reviewListMountElement = document.getElementById("review-list");
 reviewListMountElement.appendChild(reviewList.element);
 
+// Create a new RatingInput instance and mount it to the DOM
+const reviewFormRatingComponentElement = document.getElementById(
+  "review-form__rating-component"
+);
+const ratingInput = new RatingInput();
+reviewFormRatingComponentElement.appendChild(ratingInput.element);
+
 /**
  * Handles form submission for adding a new review
  * @param {Event} event
  */
 const reviewFormSubmitHandler = (event) => {
   event.preventDefault();
+  event.stopPropagation();
 
   const form = event.target;
   const formData = new FormData(form);
@@ -269,7 +354,7 @@ const reviewFormSubmitHandler = (event) => {
 
   const review = {
     review: formValues.review,
-    rating: parseInt(formValues.rating, 10),
+    rating: ratingInput.ratingValue,
   };
 
   try {
@@ -279,4 +364,5 @@ const reviewFormSubmitHandler = (event) => {
   }
 
   form.reset();
+  ratingInput.reset();
 };

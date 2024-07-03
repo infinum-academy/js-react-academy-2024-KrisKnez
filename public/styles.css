@@ -71,7 +71,14 @@ main > * + * {
   max-height: 100px;
 }
 .review-form__rating {
-  min-width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.review-form__rating-title {
+  color: white;
+  font-weight: 500;
+  font-size: large;
 }
 
 /* Review List Component */
@@ -95,6 +102,40 @@ main > * + * {
 }
 .review-card__delete-button {
   align-self: flex-start;
+}
+
+/* Rating Input Component */
+.rating-input {
+  display: flex;
+  gap: 4px;
+}
+.rating-input__star {
+  visibility: hidden;
+  position: relative;
+  margin: 0;
+
+  /* With this we define the size of the stars */
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+.rating-input__star:not(:disabled) {
+  cursor: pointer;
+}
+.rating-input__star::before {
+  content: "★";
+  color: white;
+  visibility: visible;
+
+  line-height: 1;
+  font-size: inherit; /* Inherit the font size from parent */
+
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+.rating-input__star:checked:before {
+  color: yellow;
 }
 
 /* Form Elements */

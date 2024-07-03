@@ -32,7 +32,7 @@
             </p>
 
             <!-- Average Rating -->
-             <div id="average-rating" class="movie-card__average-rating" />
+            <div id="average-rating" class="movie-card__average-rating" />
           </div>
         </article>
       </section>
@@ -50,14 +50,10 @@
           ></textarea>
 
           <!-- Rating -->
-          <input
-            class="review-form__rating input"
-            type="number"
-            name="rating"
-            min="1"
-            max="5"
-            placeholder="Add rating"
-          />
+          <div class="review-form__rating">
+            <div class="review-form__rating-title">Rating</div>
+            <div id="review-form__rating-component"></div>
+          </div>
 
           <!-- Submit Button -->
           <button class="button" type="submit">Post</button>
