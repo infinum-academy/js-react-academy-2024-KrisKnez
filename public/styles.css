@@ -47,6 +47,10 @@ main > * + * {
 .movie-card__description {
   margin: 0;
 }
+.movie-card__average-rating {
+  margin-top: 20px;
+  font-weight: bold;
+}
 
 /* Review Form Component */
 .review-form {

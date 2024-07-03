@@ -132,9 +132,12 @@ class ReviewCard {
 class ReviewList {
   /**
    * @param {{review: string, rating: number}[]} reviews
+   * @param {HTMLElement} averageRatingElement
+   * @param {StorageAdapter} storageAdapter
    */
   constructor(
     reviews,
+    averageRatingElement,
     storageAdapter = new LocalStorageStorageAdapter("reviews")
   ) {
     if (storageAdapter instanceof StorageAdapter === false) {
@@ -144,13 +147,33 @@ class ReviewList {
     const savedReviews = storageAdapter.load();
 
     this.reviews = savedReviews || reviews;
+    this.averageRatingElement = averageRatingElement;
     this.storageAdapter = storageAdapter;
 
     this.element = document.createElement("div");
     this.element.classList.add("review-list");
 
     this.storageAdapter.save(this.reviews);
+    this.updateAverageRating();
     this.render();
+  }
+
+  /**
+   * Returns the average rating of all reviews
+   * @returns {number}
+   */
+  get averageRating() {
+    const totalRating = this.reviews.reduce(
+      (acc, review) => acc + review.rating,
+      0
+    );
+    return totalRating / this.reviews.length;
+  }
+
+  updateAverageRating() {
+    if (!this.averageRatingElement) return;
+
+    this.averageRatingElement.textContent = `${this.averageRating.toFixed(1)} / 5`;
   }
 
   /**
@@ -178,6 +201,7 @@ class ReviewList {
     }
 
     this.storageAdapter.save(this.reviews);
+    this.updateAverageRating();
     this.render();
   }
 
@@ -193,6 +217,7 @@ class ReviewList {
     this.reviews.splice(index, 1);
 
     this.storageAdapter.save(this.reviews);
+    this.updateAverageRating();
     this.render();
   }
 
@@ -222,7 +247,8 @@ class ReviewList {
 }
 
 // Create a new ReviewList instance and mount it to the DOM
-const reviewList = new ReviewList(reviews);
+const averageRatingElement = document.getElementById("average-rating");
+const reviewList = new ReviewList(reviews, averageRatingElement);
 const reviewListMountElement = document.getElementById("review-list");
 reviewListMountElement.appendChild(reviewList.element);
 
