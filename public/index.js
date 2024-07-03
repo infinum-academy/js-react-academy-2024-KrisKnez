@@ -1,13 +1,87 @@
 const reviews = [
   {
-    review: "This show is hilarious! I love the characters and the jokes are always on point.",
+    review:
+      "This show is hilarious! I love the characters and the jokes are always on point.",
     rating: 5,
   },
   {
-    review: "I can't get enough of this show! I've watched every episode at least 3 times.",
+    review:
+      "I can't get enough of this show! I've watched every episode at least 3 times.",
     rating: 5,
   },
 ];
+
+/**
+ * Abstract class for storage adapters
+ */
+class StorageAdapter {
+  /**
+   * Loads data from storage
+   * @returns {any}
+   */
+  load() {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * Saves data to storage
+   * @param {any} data
+   * @returns {void}
+   */
+  save(data) {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * Clears data from storage
+   * @returns {void}
+   */
+  clear() {
+    throw new Error("Not implemented");
+  }
+}
+
+/** Local Storage Storage Adapter */
+class LocalStorageStorageAdapter extends StorageAdapter {
+  /**
+   * @param {string} key
+   */
+  constructor(key) {
+    super();
+    this.key = key;
+  }
+
+  /**
+   * Loads data from local storage
+   * @returns {any}
+   */
+  load() {
+    const data = localStorage.getItem(this.key);
+    try {
+      return data ? JSON.parse(data) : null;
+    } catch (e) {
+      console.error("Failed to parse JSON from localStorage", e);
+      return null;
+    }
+  }
+
+  /**
+   * Saves data to local storage
+   * @param {any} data
+   * @returns {void}
+   */
+  save(data) {
+    localStorage.setItem(this.key, JSON.stringify(data));
+  }
+
+  /**
+   * Clears data from local storage
+   * @returns {void}
+   */
+  clear() {
+    localStorage.removeItem(this.key);
+  }
+}
 
 class ReviewCard {
   /**
@@ -45,12 +119,23 @@ class ReviewList {
   /**
    * @param {{review: string, rating: number}[]} reviews
    */
-  constructor(reviews) {
-    this.reviews = reviews;
+  constructor(
+    reviews,
+    storageAdapter = new LocalStorageStorageAdapter("reviews")
+  ) {
+    if (storageAdapter instanceof StorageAdapter === false) {
+      throw new Error("Invalid storage adapter provided");
+    }
+
+    const savedReviews = storageAdapter.load();
+
+    this.reviews = savedReviews || reviews;
+    this.storageAdapter = storageAdapter;
 
     this.element = document.createElement("div");
     this.element.classList.add("review-list");
 
+    this.storageAdapter.save(this.reviews);
     this.render();
   }
 
@@ -60,8 +145,14 @@ class ReviewList {
    * @param {'start' | 'end'} location
    */
   addReview(review, location = "end") {
-    if (typeof review.rating !== "number" || review.rating < 1 || review.rating > 5) {
-      throw new Error("Invalid rating. Rating must be a number between 1 and 5.");
+    if (
+      typeof review.rating !== "number" ||
+      review.rating < 1 ||
+      review.rating > 5
+    ) {
+      throw new Error(
+        "Invalid rating. Rating must be a number between 1 and 5."
+      );
     }
 
     if (location === "start") {
@@ -72,6 +163,7 @@ class ReviewList {
       throw new Error("Invalid location provided");
     }
 
+    this.storageAdapter.save(this.reviews);
     this.render();
   }
 
@@ -85,6 +177,8 @@ class ReviewList {
     }
 
     this.reviews.splice(index, 1);
+
+    this.storageAdapter.save(this.reviews);
     this.render();
   }
 
