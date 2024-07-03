@@ -1,0 +1,148 @@
+const reviews = [
+  {
+    review: "This show is hilarious! I love the characters and the jokes are always on point.",
+    rating: 5,
+  },
+  {
+    review: "I can't get enough of this show! I've watched every episode at least 3 times.",
+    rating: 5,
+  },
+];
+
+class ReviewCard {
+  /**
+   * @param {{review: string, rating: number}} review
+   */
+  constructor(review) {
+    this.review = review;
+
+    this.element = document.createElement("div");
+    this.element.classList.add("review-card");
+
+    this.render();
+  }
+
+  /**
+   * Renders the review card
+   */
+  render() {
+    this.element.innerHTML = "";
+
+    const reviewElement = document.createElement("div");
+    reviewElement.classList.add("review-card__review");
+    reviewElement.textContent = this.review.review;
+
+    const ratingElement = document.createElement("div");
+    ratingElement.classList.add("review-card__rating");
+    ratingElement.textContent = `${this.review.rating} / 5`;
+
+    this.element.appendChild(reviewElement);
+    this.element.appendChild(ratingElement);
+  }
+}
+
+class ReviewList {
+  /**
+   * @param {{review: string, rating: number}[]} reviews
+   */
+  constructor(reviews) {
+    this.reviews = reviews;
+
+    this.element = document.createElement("div");
+    this.element.classList.add("review-list");
+
+    this.render();
+  }
+
+  /**
+   * Adds a review to the reviews array and re-renders the review list
+   * @param {{review: string, rating: number}} review
+   * @param {'start' | 'end'} location
+   */
+  addReview(review, location = "end") {
+    if (typeof review.rating !== "number" || review.rating < 1 || review.rating > 5) {
+      throw new Error("Invalid rating. Rating must be a number between 1 and 5.");
+    }
+
+    if (location === "start") {
+      this.reviews.unshift(review);
+    } else if (location === "end") {
+      this.reviews.push(review);
+    } else {
+      throw new Error("Invalid location provided");
+    }
+
+    this.render();
+  }
+
+  /**
+   * Removes a review from the reviews array by index and re-renders the review list
+   * @param {number} index
+   */
+  removeReviewByIndex(index) {
+    if (index < 0 || index >= this.reviews.length) {
+      throw new Error("Index out of bounds");
+    }
+
+    this.reviews.splice(index, 1);
+    this.render();
+  }
+
+  /**
+   * Removes a review from the reviews array by reference and re-renders the review list
+   * @param {{review: string, rating: number}} review
+   */
+  removeReviewByReference(review) {
+    const index = this.reviews.indexOf(review);
+    if (index === -1) {
+      throw new Error("Review not found");
+    }
+    this.removeReviewByIndex(index);
+  }
+
+  /**
+   * Renders the review list
+   */
+  render() {
+    this.element.innerHTML = "";
+
+    this.reviews.forEach((review) => {
+      const reviewCard = new ReviewCard(review);
+      this.element.appendChild(reviewCard.element);
+    });
+  }
+}
+
+// Create a new ReviewList instance and mount it to the DOM
+const reviewList = new ReviewList(reviews);
+const reviewListMountElement = document.getElementById("review-list");
+reviewListMountElement.appendChild(reviewList.element);
+
+/**
+ * Handles form submission for adding a new review
+ * @param {Event} event
+ */
+const reviewFormSubmitHandler = (event) => {
+  event.preventDefault();
+
+  const form = event.target;
+  const formData = new FormData(form);
+
+  const formValues = {};
+  formData.forEach((value, key) => {
+    formValues[key] = value;
+  });
+
+  const review = {
+    review: formValues.review,
+    rating: parseInt(formValues.rating, 10),
+  };
+
+  try {
+    reviewList.addReview(review, "start");
+  } catch (error) {
+    alert(error.message);
+  }
+
+  form.reset();
+};
