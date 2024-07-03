@@ -86,14 +86,20 @@ class LocalStorageStorageAdapter extends StorageAdapter {
 class ReviewCard {
   /**
    * @param {{review: string, rating: number}} review
+   * @param {ReviewList} reviewList
    */
-  constructor(review) {
+  constructor(review, reviewList) {
     this.review = review;
+    this.reviewList = reviewList;
 
     this.element = document.createElement("div");
     this.element.classList.add("review-card");
 
     this.render();
+  }
+
+  removeItem() {
+    this.reviewList.removeReviewByReference(this.review);
   }
 
   /**
@@ -110,8 +116,16 @@ class ReviewCard {
     ratingElement.classList.add("review-card__rating");
     ratingElement.textContent = `${this.review.rating} / 5`;
 
+    const removeButtonElement = document.createElement("button");
+    removeButtonElement.classList.add("review-card__delete-button", "button");
+    removeButtonElement.textContent = "Remove";
+    removeButtonElement.addEventListener("click", () => {
+      this.removeItem();
+    });
+
     this.element.appendChild(reviewElement);
     this.element.appendChild(ratingElement);
+    this.element.appendChild(removeButtonElement);
   }
 }
 
@@ -201,7 +215,7 @@ class ReviewList {
     this.element.innerHTML = "";
 
     this.reviews.forEach((review) => {
-      const reviewCard = new ReviewCard(review);
+      const reviewCard = new ReviewCard(review, this);
       this.element.appendChild(reviewCard.element);
     });
   }

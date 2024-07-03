@@ -89,6 +89,9 @@ main > * + * {
 .review-card__review {
   overflow: hidden;
 }
+.review-card__delete-button {
+  align-self: flex-start;
+}
 
 /* Form Elements */
 .input {
