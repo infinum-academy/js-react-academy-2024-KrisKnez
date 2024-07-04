@@ -359,7 +359,7 @@ const reviewFormSubmitHandler = (event) => {
 
   const review = {
     review: formValues.review,
-    rating: ratingInput.ratingValue,
+    rating: parseInt(formValues.rating, 10),
   };
 
   try {
