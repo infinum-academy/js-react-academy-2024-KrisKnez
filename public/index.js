@@ -238,6 +238,8 @@ class ReviewList {
    * @returns {number}
    */
   get averageRating() {
+    if (this.reviews.length === 0) return 0;
+
     const totalRating = this.reviews.reduce(
       (acc, review) => acc + review.rating,
       0
@@ -248,9 +250,12 @@ class ReviewList {
   updateAverageRating() {
     if (!this.averageRatingElement) return;
 
-    this.averageRatingElement.textContent = `${this.averageRating.toFixed(
-      1
-    )} / 5`;
+    if (this.averageRating === 0)
+      this.averageRatingElement.textContent = "No reviews yet";
+    else
+      this.averageRatingElement.textContent = `${this.averageRating.toFixed(
+        1
+      )} / 5`;
   }
 
   /**
