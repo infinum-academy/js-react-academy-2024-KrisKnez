@@ -1,6 +1,9 @@
+"use client";
+
 import { Container, Heading, Stack } from "@chakra-ui/react";
 
 import { ShowDetailsContainer } from "@/components/features/shows/ShowDetailsContainer/ShowDetailsContainer";
+import { ShowReviewSection } from "@/components/features/shows/ShowReviewSection/ShowReviewSection";
 
 export default function Home() {
   return (
@@ -10,6 +13,7 @@ export default function Home() {
           TV shows APP
         </Heading>
         <ShowDetailsContainer />
+        <ShowReviewSection />
       </Stack>
     </Container>
   );
