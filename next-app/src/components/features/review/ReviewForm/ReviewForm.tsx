@@ -1,15 +1,7 @@
 "use client";
 
-import {
-  Button,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Stack,
-  Textarea,
-} from "@chakra-ui/react";
+import RatingInput from "@/components/shared/RatingInput/RatingInput";
+import { Button, Stack, Textarea } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 interface ReviewFormProps {
@@ -21,7 +13,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
   const [rating, setRating] = useState(5);
 
   const [commentIsInvalid, setCommentIsInvalid] = useState(false);
-  const [ratingIsInvalid, setRatingIsInvalid] = useState(false);
 
   const isValidComment = (comment: string): boolean => {
     if (!comment) return false;
@@ -42,7 +33,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
       formIsInvalid = true;
     }
     if (!isValidRating(rating)) {
-      setRatingIsInvalid(true);
       formIsInvalid = true;
     }
 
@@ -53,7 +43,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
     setComment("");
     setRating(5);
     setCommentIsInvalid(false);
-    setRatingIsInvalid(false);
   };
 
   return (
@@ -69,24 +58,13 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
         }}
         isInvalid={commentIsInvalid}
       />
-      <NumberInput
-        defaultValue={5}
-        min={1}
-        max={5}
-        value={rating || undefined}
-        onChange={(_valueAsString, valueAsNumber) => {
-          const newRating = valueAsNumber;
-          setRating(newRating);
-          setRatingIsInvalid(!isValidRating(newRating));
+      <RatingInput
+        label={`${rating} / 5`}
+        onChange={(rating) => {
+          setRating(rating);
         }}
-        isInvalid={ratingIsInvalid}
-      >
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
+        value={rating}
+      />
       <Button
         colorScheme="teal"
         size="lg"
