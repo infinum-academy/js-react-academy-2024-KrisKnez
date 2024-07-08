@@ -1,7 +1,14 @@
 import React from "react";
 
 import { IReview } from "@/typings/review";
-import { Button, Card, CardBody, Stack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import RatingInput from "@/components/shared/RatingInput/RatingInput";
 import {
   deleteReview,
@@ -16,14 +23,22 @@ const ReviewItem = ({ review }: IReviewItemProps) => {
   const { dispatch } = useReviewContext();
 
   return (
-    <Card>
+    <Card bg="brand.800" color="white" borderRadius={"24px"}>
       <CardBody>
         <Stack spacing={4} alignItems="flex-start" marginTop={2}>
           <Text>{review.comment}</Text>
           <RatingInput value={review.rating} label={`${review.rating} / 5`} />
-          <Button onClick={() => dispatch(deleteReview(review))}>Delete</Button>
         </Stack>
       </CardBody>
+      <CardFooter>
+        <Button
+          fontSize="sm"
+          colorScheme="gray"
+          onClick={() => dispatch(deleteReview(review))}
+        >
+          Remove
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

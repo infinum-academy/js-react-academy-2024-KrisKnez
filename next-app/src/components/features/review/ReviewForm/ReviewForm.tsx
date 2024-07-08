@@ -1,7 +1,7 @@
 "use client";
 
 import RatingInput from "@/components/shared/RatingInput/RatingInput";
-import { Button, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Button, Heading, Stack, Textarea } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 interface ReviewFormProps {
@@ -47,9 +47,12 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
 
   return (
     <Stack alignItems="flex-start">
+      <Heading as="h2" size="md">Reviews</Heading>
       <Textarea
         placeholder="Add review"
         maxH={200}
+        bg="white"
+        color="black"
         value={comment}
         onChange={(e) => {
           const newComment = e.target.value;
@@ -58,16 +61,18 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
         }}
         isInvalid={commentIsInvalid}
       />
-      <RatingInput
-        label={`${rating} / 5`}
-        onChange={(rating) => {
-          setRating(rating);
-        }}
-        value={rating}
-      />
+      <Box p={2}>
+        <RatingInput
+          label={`${rating} / 5`}
+          onChange={(rating) => {
+            setRating(rating);
+          }}
+          value={rating}
+        />
+      </Box>
       <Button
-        colorScheme="teal"
-        size="lg"
+        colorScheme="gray"
+        fontSize="sm"
         onClick={() => {
           if (validateForm()) return;
 
@@ -75,7 +80,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
           resetForm();
         }}
       >
-        Button
+        Post
       </Button>
     </Stack>
   );

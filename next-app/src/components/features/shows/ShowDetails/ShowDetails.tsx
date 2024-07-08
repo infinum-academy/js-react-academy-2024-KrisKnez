@@ -20,7 +20,7 @@ export const ShowDetails = ({ show }: ShowDetailsProps) => {
   const averageRating = getAverageRating(state);
 
   return (
-    <Card overflow="hidden">
+    <Card overflow="hidden" borderRadius={"24px"}>
       <Box position="relative" width="100%" height="400px">
         <Image
           src={show.imageUrl || "https://fakeimg.pl/600x400"}
@@ -30,9 +30,13 @@ export const ShowDetails = ({ show }: ShowDetailsProps) => {
         />
       </Box>
       <CardBody>
-        <Heading size="md">{show.title}</Heading>
-        <Text pt="2">{show.description}</Text>
-        <Text pt="2">
+        <Heading size="md" color="brand.800">
+          {show.title}
+        </Heading>
+        <Text pt="2" color="brand.800">
+          {show.description}
+        </Text>
+        <Text pt="2" fontWeight="bold" color="brand.800">
           {averageRating ? `${averageRating.toFixed(1)} / 5` : "No ratings"}
         </Text>
       </CardBody>
