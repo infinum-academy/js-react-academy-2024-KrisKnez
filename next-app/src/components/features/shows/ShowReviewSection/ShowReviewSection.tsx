@@ -2,9 +2,10 @@ import React from "react";
 import ReviewForm from "../../review/ReviewForm/ReviewForm";
 import ReviewList from "../../review/ReviewList/ReviewList";
 import { IReview } from "@/typings/review";
+import { addReview, useReviewContext } from "@/contexts/review/ReviewContext";
 
 export const ShowReviewSection: React.FC = () => {
-  const [reviewList, setReviewList] = React.useState<IReview[]>([]);
+  const { state, dispatch } = useReviewContext();
 
   return (
     <>
@@ -16,10 +17,10 @@ export const ShowReviewSection: React.FC = () => {
             comment: comment,
             rating: rating,
           };
-          setReviewList([...reviewList, newReview]);
+          dispatch(addReview(newReview));
         }}
       />
-      <ReviewList reviews={reviewList} />
+      <ReviewList reviews={state.reviews} />
     </>
   );
 };
