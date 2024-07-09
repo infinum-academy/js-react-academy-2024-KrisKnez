@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TV shows APP</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>TV shows APP</h1>
+
+      <!-- Movie Card Section -->
+      <section>
+        <article class="movie-card">
+          <!-- Image -->
+          <img
+            class="movie-card__image"
+            src="assets/brooklyn nine-nine.webp"
+            alt="TV show"
+          />
+
+          <div class="movie-card__body">
+            <!-- Title -->
+            <h2 class="movie-card__title">Brooklyn Nine-Nine</h2>
+
+            <!-- Description -->
+            <p class="movie-card__description">
+              Comedy series following the exploits of Det. Jake Peralta and his
+              diverse, lovable colleagues as they police the NYPD's 99th
+              Precinct.
+            </p>
+
+            <!-- Average Rating -->
+            <div id="average-rating" class="movie-card__average-rating" />
+          </div>
+        </article>
+      </section>
+
+      <!-- Review Form Section -->
+      <section>
+        <h2>Reviews</h2>
+
+        <form class="review-form" onsubmit="reviewFormSubmitHandler(event)">
+          <!-- Review -->
+          <textarea
+            class="review-form__review input"
+            name="review"
+            placeholder="Add review"
+          ></textarea>
+
+          <!-- Rating -->
+          <div class="review-form__rating">
+            <div class="review-form__rating-title">Rating</div>
+            <div id="review-form__rating-component"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <button class="button" type="submit">Post</button>
+        </form>
+      </section>
+
+      <!-- Review List Section -->
+      <section id="review-list" />
+    </main>
+    <script src="index.js"></script>
+  </body>
+</html>
