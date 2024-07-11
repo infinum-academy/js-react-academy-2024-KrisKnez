@@ -2,10 +2,11 @@ import React from "react";
 import ReviewForm from "../../review/ReviewForm/ReviewForm";
 import ReviewList from "../../review/ReviewList/ReviewList";
 import { IReview } from "@/typings/review";
-import { addReview, useReviewContext } from "@/contexts/review/ReviewContext";
+import { addReview, useReviewDispatch, useReviewState } from "@/contexts/review/ReviewContext";
 
 export const ShowReviewSection: React.FC = () => {
-  const { state, dispatch } = useReviewContext();
+  const reviewState = useReviewState();
+  const reviewDispatch = useReviewDispatch();
 
   return (
     <>
@@ -17,10 +18,10 @@ export const ShowReviewSection: React.FC = () => {
             comment: comment,
             rating: rating,
           };
-          dispatch(addReview(newReview));
+          reviewDispatch(addReview(newReview));
         }}
       />
-      <ReviewList reviews={state.reviews} />
+      <ReviewList reviews={reviewState.reviews} />
     </>
   );
 };

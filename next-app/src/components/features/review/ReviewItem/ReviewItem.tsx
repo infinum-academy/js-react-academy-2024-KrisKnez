@@ -12,7 +12,7 @@ import {
 import RatingInput from "@/components/shared/RatingInput/RatingInput";
 import {
   deleteReview,
-  useReviewContext,
+  useReviewDispatch,
 } from "@/contexts/review/ReviewContext";
 
 interface IReviewItemProps {
@@ -20,7 +20,7 @@ interface IReviewItemProps {
 }
 
 const ReviewItem = ({ review }: IReviewItemProps) => {
-  const { dispatch } = useReviewContext();
+  const reviewDispatch = useReviewDispatch();
 
   return (
     <Card bg="brand.800" color="white" borderRadius={"24px"}>
@@ -34,7 +34,7 @@ const ReviewItem = ({ review }: IReviewItemProps) => {
         <Button
           fontSize="sm"
           colorScheme="gray"
-          onClick={() => dispatch(deleteReview(review))}
+          onClick={() => reviewDispatch(deleteReview(review))}
         >
           Remove
         </Button>

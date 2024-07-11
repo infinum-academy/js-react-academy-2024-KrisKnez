@@ -7,7 +7,7 @@ import { IShow } from "@/typings/show";
 import { Image } from "@chakra-ui/next-js";
 import {
   getAverageRating,
-  useReviewContext,
+  useReviewState,
 } from "@/contexts/review/ReviewContext";
 
 interface ShowDetailsProps {
@@ -15,9 +15,8 @@ interface ShowDetailsProps {
 }
 
 export const ShowDetails = ({ show }: ShowDetailsProps) => {
-  const { state } = useReviewContext();
-
-  const averageRating = getAverageRating(state);
+  const reviewState = useReviewState();
+  const averageRating = getAverageRating(reviewState);
 
   return (
     <Card overflow="hidden" borderRadius={"24px"}>

@@ -34,53 +34,39 @@ const initialState: IState = {
   reviews: [],
 };
 
-// Create context
-export const ReviewContext = createContext<{
-  state: IState;
-  dispatch: Dispatch<Action>;
-}>({
-  state: initialState,
-  dispatch: () => undefined,
-});
+// Create contexts
+export const StateContext = createContext<IState>(initialState);
+export const DispatchContext = createContext<Dispatch<Action>>(() => undefined);
 
 // Reducer
 const reviewReducer = (state: IState, action: Action): IState => {
   switch (action.type) {
     case "ADD_REVIEW":
-      return {
-        ...state,
-        reviews: [...state.reviews, action.payload],
-      };
+      return { ...state, reviews: [...state.reviews, action.payload] };
     case "ADD_REVIEW_ARRAY":
-      return {
-        ...state,
-        reviews: [...state.reviews, ...action.payload],
-      };
+      return { ...state, reviews: [...state.reviews, ...action.payload] };
     case "DELETE_REVIEW":
       return {
         ...state,
         reviews: state.reviews.filter((review) => review !== action.payload),
       };
-
     default:
       return state;
   }
 };
 
 // Provider component
-interface IReviewProviderProps {
-  children: ReactNode;
-}
-
-export const ReviewProvider: React.FC<IReviewProviderProps> = ({
+export const ReviewProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(reviewReducer, initialState);
 
   // Load reviews array from local storage
   useEffect(() => {
-    const reviews = JSON.parse(localStorage.getItem("reviews") || "[]");
-    dispatch({ type: "ADD_REVIEW_ARRAY", payload: reviews });
+    const savedReviews = localStorage.getItem("reviews");
+    if (savedReviews) {
+      dispatch({ type: "ADD_REVIEW_ARRAY", payload: JSON.parse(savedReviews) });
+    }
   }, []);
 
   // Sync state with local storage
@@ -89,22 +75,32 @@ export const ReviewProvider: React.FC<IReviewProviderProps> = ({
   }, [state.reviews]);
 
   return (
-    <ReviewContext.Provider value={{ state, dispatch }}>
-      {children}
-    </ReviewContext.Provider>
+    <StateContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+        {children}
+      </DispatchContext.Provider>
+    </StateContext.Provider>
   );
 };
 
-// Custom hook to use the ReviewContext
-export const useReviewContext = () => {
-  const context = useContext(ReviewContext);
+// Custom hooks to use the contexts
+export const useReviewState = (): IState => {
+  const context = useContext(StateContext);
   if (context === undefined) {
-    throw new Error("useReviewContext must be used within a ReviewProvider");
+    throw new Error("useReviewState must be used within a ReviewProvider");
   }
   return context;
 };
 
-// Utility Functions to Generate Payloads
+export const useReviewDispatch = (): Dispatch<Action> => {
+  const context = useContext(DispatchContext);
+  if (context === undefined) {
+    throw new Error("useReviewDispatch must be used within a ReviewProvider");
+  }
+  return context;
+};
+
+// Action creators
 export const addReview = (review: IReview): IAddReviewAction => ({
   type: "ADD_REVIEW",
   payload: review,
@@ -121,7 +117,7 @@ export const deleteReview = (review: IReview): IDeleteReviewAction => ({
 });
 
 // Helper functions
-export const getAverageRating = (state: IState) => {
+export const getAverageRating = (state: IState): number => {
   const totalReviews = state.reviews.length;
   if (totalReviews === 0) return 0;
   const sumOfRatings = state.reviews.reduce(
