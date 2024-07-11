@@ -23,7 +23,7 @@ const ReviewItem = ({ review }: IReviewItemProps) => {
   const reviewDispatch = useReviewDispatch();
 
   return (
-    <Card bg="brand.800" color="white" borderRadius={"24px"}>
+    <Card bg="brand.800" color="white">
       <CardBody>
         <Stack spacing={4} alignItems="flex-start" marginTop={2}>
           <Text>{review.comment}</Text>

@@ -22,7 +22,11 @@ export const theme = extendTheme({
   components: {
     Card: {
       baseStyle: {
-        borderRadius: "24px", // Card border radius
+        // We have to target the container of the Card component
+        // Because the Card component is a multipart component
+        container: {
+          borderRadius: "24px", // Card border radius
+        },
       },
     },
     Button: {

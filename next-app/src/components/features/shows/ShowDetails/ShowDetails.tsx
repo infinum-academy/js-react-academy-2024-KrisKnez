@@ -19,7 +19,9 @@ export const ShowDetails = ({ show }: ShowDetailsProps) => {
   const averageRating = getAverageRating(reviewState);
 
   return (
-    <Card overflow="hidden" borderRadius={"24px"}>
+    <Card
+      overflow="hidden"
+    >
       <Box position="relative" width="100%" height="400px">
         <Image
           src={show.imageUrl || "https://fakeimg.pl/600x400"}
