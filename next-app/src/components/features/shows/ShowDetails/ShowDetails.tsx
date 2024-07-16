@@ -16,15 +16,13 @@ interface ShowDetailsProps {
 
 export const ShowDetails = ({ show }: ShowDetailsProps) => {
   const reviewState = useReviewState();
-  const averageRating = getAverageRating(reviewState);
+  const averageRating = getAverageRating(reviewState, show.id);
 
   return (
-    <Card
-      overflow="hidden"
-    >
+    <Card overflow="hidden">
       <Box position="relative" width="100%" height="400px">
         <Image
-          src={show.imageUrl || "https://fakeimg.pl/600x400"}
+          src={show.image_url || "https://fakeimg.pl/600x400"}
           alt={show.title}
           fill
           sx={{ objectFit: "cover" }}

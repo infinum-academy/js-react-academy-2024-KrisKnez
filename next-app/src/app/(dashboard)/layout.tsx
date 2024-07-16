@@ -1,4 +1,4 @@
-import { SidebarNavigation } from "@/components/shared/SidebarNavigation/SidebarNavigation";
+import { SidebarNavigation } from "@/components/core/SidebarNavigation/SidebarNavigation";
 import { Box, Container, HStack } from "@chakra-ui/react";
 import React from "react";
 

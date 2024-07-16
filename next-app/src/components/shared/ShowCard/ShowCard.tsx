@@ -15,7 +15,7 @@ const ShowCard = ({ show }: IShowCardProps) => {
     <Card overflow="hidden" flexGrow={1}>
       <Box position="relative" width="100%" flexGrow={1}>
         <Image
-          src={show.imageUrl || "https://fakeimg.pl/600x400"}
+          src={show.image_url || "https://fakeimg.pl/600x400"}
           alt={show.title}
           fill
           sx={{ objectFit: "cover" }}
@@ -25,7 +25,9 @@ const ShowCard = ({ show }: IShowCardProps) => {
         <Heading size="md">{show.title}</Heading>
         <HStack>
           <StarIcon />
-          <Text>{show.averageRating}/5</Text>
+          <Text>
+            {show.average_rating ? `${show.average_rating}/5` : "No rating"}
+          </Text>
         </HStack>
       </CardBody>
     </Card>

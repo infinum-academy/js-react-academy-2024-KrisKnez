@@ -4,12 +4,20 @@ import ReviewList from "../../review/ReviewList/ReviewList";
 import { IReview } from "@/typings/review";
 import {
   addReview,
+  getReviewsByShowId,
   useReviewDispatch,
   useReviewState,
 } from "@/contexts/review/ReviewContext";
 import { Heading, HStack, VStack } from "@chakra-ui/react";
+import { IShow } from "@/typings/show";
 
-export const ShowReviewSection: React.FC = () => {
+interface ShowReviewSectionProps {
+  showId: string;
+}
+
+export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
+  showId,
+}) => {
   const reviewState = useReviewState();
   const reviewDispatch = useReviewDispatch();
 
@@ -24,11 +32,12 @@ export const ShowReviewSection: React.FC = () => {
               email: "#",
               comment: comment,
               rating: rating,
+              showId,
             };
             reviewDispatch(addReview(newReview));
           }}
         />
-        <ReviewList reviews={reviewState.reviews} />
+        <ReviewList reviews={getReviewsByShowId(reviewState, showId)} />
       </VStack>
     </HStack>
   );
