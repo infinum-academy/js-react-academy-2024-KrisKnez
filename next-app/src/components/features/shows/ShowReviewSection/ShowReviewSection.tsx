@@ -9,7 +9,6 @@ import {
   useReviewState,
 } from "@/contexts/review/ReviewContext";
 import { Heading, HStack, VStack } from "@chakra-ui/react";
-import { IShow } from "@/typings/show";
 
 interface ShowReviewSectionProps {
   showId: string;
@@ -26,15 +25,16 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
       <Heading size="lg">Reviews</Heading>
       <VStack flexGrow={1} alignItems="stretch" spacing={16}>
         <ReviewForm
-          addShowReview={(comment, rating) => {
+          onSubmit={(form, data) => {
             const newReview: IReview = {
               avatar: "#",
               email: "#",
-              comment: comment,
-              rating: rating,
+              comment: data.comment,
+              rating: data.rating,
               showId,
             };
             reviewDispatch(addReview(newReview));
+            form.reset();
           }}
         />
         <ReviewList reviews={getReviewsByShowId(reviewState, showId)} />
