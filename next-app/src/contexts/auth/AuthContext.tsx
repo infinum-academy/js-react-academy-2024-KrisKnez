@@ -68,8 +68,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  console.log("kikonja", state);
-
   // Load authData from local storage
   useEffect(() => {
     const authData = localStorage.getItem("authData");

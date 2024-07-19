@@ -20,12 +20,10 @@ export const AuthRedirect = ({ condition, children }: AuthRedirectProps) => {
   const redirectToDashboard =
     condition === "isNotLoggedIn" && loggedIn === true;
 
-  console.log(loggedIn, redirectToLogin, redirectToDashboard);
-
   useEffect(() => {
     if (redirectToLogin) router.push("/auth");
     else if (redirectToDashboard) router.push("/dashboard");
-  }, [redirectToLogin, redirectToDashboard]);
+  }, [redirectToDashboard, redirectToLogin, router]);
 
   if (loggedIn === null || redirectToLogin || redirectToDashboard)
     return (
