@@ -153,3 +153,13 @@ export const isLoggedIn = (state: IState): boolean | null => {
 
   return true;
 };
+
+export const getHeaders = (state: IState) => {
+  if (!state.authData) return null;
+
+  return {
+    "Access-Token": state.authData.accessToken,
+    Client: state.authData.client,
+    Uid: state.authData.uid,
+  };
+};

@@ -62,7 +62,7 @@ export const LoginCard = () => {
             LOGIN
           </Button>
           <Text color="white" fontSize="sm" textAlign="center">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/register" fontWeight={600}>
               Sign Up
             </Link>

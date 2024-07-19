@@ -15,7 +15,7 @@ export default function Home() {
     const loggedIn = isLoggedIn(authState);
     if (loggedIn === true) router.push("/dashboard");
     else if (loggedIn === false) router.push("/auth");
-  }, [authState]);
+  }, [authState, router]);
 
   return (
     <VStack py={16}>

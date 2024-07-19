@@ -17,7 +17,7 @@ import {
 import { useForm } from "react-hook-form";
 import { MdLock, MdPerson } from "react-icons/md";
 
-interface RegistrationFormFields {
+export interface RegistrationFormFields {
   email: string;
   password: string;
   passwordConfirmation: string;

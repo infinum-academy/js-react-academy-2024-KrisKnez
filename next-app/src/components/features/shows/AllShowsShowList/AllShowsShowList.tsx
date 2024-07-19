@@ -1,11 +1,28 @@
 import ShowList from "@/components/shared/ShowList/ShowList";
-import { getShows, getShowsKey } from "@/fetchers/shows";
-import { HStack, Spinner, VStack } from "@chakra-ui/react";
+import { getHeaders, useAuthState } from "@/contexts/auth/AuthContext";
+import { fetcher } from "@/fetchers/fetcher";
+import { swrKeys } from "@/fetchers/swrKeys";
+import { IErrorResponse } from "@/typings/errors";
+import { IShowsResponse } from "@/typings/show";
+import { Spinner, VStack } from "@chakra-ui/react";
 import React from "react";
 import useSWR from "swr";
 
 export const AllShowsShowList = () => {
-  const { data, isLoading, error } = useSWR(getShowsKey(), getShows);
+  const authState = useAuthState();
+  const { data, isLoading, error } = useSWR<
+    IShowsResponse,
+    IErrorResponse,
+    [RequestInfo, RequestInit]
+  >(
+    [
+      swrKeys.shows,
+      {
+        headers: getHeaders(authState)!,
+      },
+    ],
+    ([url, init]) => fetcher(url, init)
+  );
 
   if (isLoading) {
     return (
@@ -16,7 +33,7 @@ export const AllShowsShowList = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error.errors}</div>;
   }
 
   return <ShowList shows={data!.shows} />;

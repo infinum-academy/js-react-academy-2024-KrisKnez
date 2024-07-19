@@ -9,7 +9,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     router.push("/dashboard/all-shows");
-  }, []);
+  }, [router]);
 
   return (
     <VStack py={16}>

@@ -1,3 +1,3 @@
 export interface IErrorResponse {
-  errors?: string[];
+  errors: string[];
 }

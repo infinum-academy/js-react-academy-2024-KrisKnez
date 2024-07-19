@@ -1,13 +1,28 @@
 import ShowList from "@/components/shared/ShowList/ShowList";
+import { getHeaders, useAuthState } from "@/contexts/auth/AuthContext";
+import { fetcher } from "@/fetchers/fetcher";
 import { getShowsTopRated, getShowsTopRatedKey } from "@/fetchers/shows";
+import { swrKeys } from "@/fetchers/swrKeys";
+import { IErrorResponse } from "@/typings/errors";
+import { IShowTopRatedResponse } from "@/typings/show";
 import { Spinner, VStack } from "@chakra-ui/react";
 import React from "react";
 import useSWR from "swr";
 
 export const TopRatedShowList = () => {
-  const { data, isLoading, error } = useSWR(
-    getShowsTopRatedKey(),
-    getShowsTopRated
+  const authState = useAuthState();
+  const { data, isLoading, error } = useSWR<
+    IShowTopRatedResponse,
+    IErrorResponse,
+    [RequestInfo, RequestInit]
+  >(
+    [
+      swrKeys.showsTopRated,
+      {
+        headers: getHeaders(authState)!,
+      },
+    ],
+    ([url, init]) => fetcher(url, init)
   );
 
   if (isLoading) {
@@ -19,7 +34,7 @@ export const TopRatedShowList = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error.errors}</div>;
   }
 
   return <ShowList shows={data!.shows} />;
