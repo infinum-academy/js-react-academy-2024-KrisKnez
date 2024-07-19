@@ -1,20 +1,25 @@
 "use client";
 
-import { Container, Heading, Stack } from "@chakra-ui/react";
+import { Spinner, VStack } from "@chakra-ui/react";
 
-import { ShowDetailsContainer } from "@/components/features/shows/ShowDetailsContainer/ShowDetailsContainer";
-import { ShowReviewSection } from "@/components/features/shows/ShowReviewSection/ShowReviewSection";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { isLoggedIn, useAuthState } from "@/contexts/auth/AuthContext";
 
 export default function Home() {
+  const router = useRouter();
+
+  const authState = useAuthState();
+
+  useEffect(() => {
+    const loggedIn = isLoggedIn(authState);
+    if (loggedIn === true) router.push("/dashboard");
+    else if (loggedIn === false) router.push("/auth");
+  }, [authState]);
+
   return (
-    <Container maxW="4xl">
-      <Stack spacing={4} marginY={4}>
-        <Heading as="h1" size="lg">
-          TV shows APP
-        </Heading>
-        <ShowDetailsContainer />
-        <ShowReviewSection />
-      </Stack>
-    </Container>
+    <VStack py={16}>
+      <Spinner size="xl" />
+    </VStack>
   );
 }

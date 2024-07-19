@@ -12,7 +12,7 @@ const ShowList = ({ shows }: ShowListProps) => {
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6}>
       {shows.map((show) => (
-        <Link key={show.id} href={`/all-shows/${show.id}`}>
+        <Link key={show.id} href={`/dashboard/all-shows/${show.id}`}>
           <GridItem key={show.title} height="400px" display="flex">
             <ShowCard show={show} />
           </GridItem>

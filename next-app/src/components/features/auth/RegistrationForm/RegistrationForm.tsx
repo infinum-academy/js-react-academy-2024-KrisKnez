@@ -24,10 +24,14 @@ interface RegistrationFormFields {
 }
 
 interface RegistrationFormProps {
+  formId: string;
   onSubmit: (data: RegistrationFormFields) => void;
 }
 
-export const RegistrationForm = ({ onSubmit }: RegistrationFormProps) => {
+export const RegistrationForm = ({
+  formId,
+  onSubmit,
+}: RegistrationFormProps) => {
   const { handleSubmit, register, formState } =
     useForm<RegistrationFormFields>();
 
@@ -98,7 +102,7 @@ export const RegistrationForm = ({ onSubmit }: RegistrationFormProps) => {
   );
 
   return (
-    <chakra.form onSubmit={handleSubmit(onSubmit)}>
+    <chakra.form id={formId} onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing={8}>
         {/* Email field */}
         {emailField}
@@ -108,11 +112,6 @@ export const RegistrationForm = ({ onSubmit }: RegistrationFormProps) => {
 
         {/* Password confirmation field */}
         {passwordConfirmationField}
-
-        {/* Submit button */}
-        <Button type="submit" size="lg" fontSize="small" color="brand.800">
-          SIGN UP
-        </Button>
       </VStack>
     </chakra.form>
   );

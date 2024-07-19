@@ -21,10 +21,11 @@ interface LoginFormFields {
 }
 
 interface LoginFormProps {
+  formId: string
   onSubmit: (data: LoginFormFields) => void;
 }
 
-export const LoginForm = ({ onSubmit }: LoginFormProps) => {
+export const LoginForm = ({ formId, onSubmit }: LoginFormProps) => {
   const { handleSubmit, register, formState } = useForm<LoginFormFields>();
 
   const emailField = (
@@ -68,18 +69,13 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   );
 
   return (
-    <chakra.form onSubmit={handleSubmit(onSubmit)}>
+    <chakra.form id={formId} onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing={8}>
         {/* Email field */}
         {emailField}
 
         {/* Password field */}
         {passwordField}
-
-        {/* Submit button */}
-        <Button type="submit" size="lg" fontSize="small" color="brand.800">
-          LOGIN
-        </Button>
       </VStack>
     </chakra.form>
   );

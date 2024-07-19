@@ -1,5 +1,6 @@
 "use client";
 
+import { authLogout, useAuthDispatch } from "@/contexts/auth/AuthContext";
 import { Button, Heading, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,20 +14,22 @@ interface ISidebarItem {
 const SIDEBAR_ITEMS = [
   {
     label: "All shows",
-    href: "/all-shows",
+    href: "/dashboard/all-shows",
   },
   {
     label: "Top rated",
-    href: "/top-rated",
+    href: "/dashboard/top-rated",
   },
   {
     label: "Profile",
-    href: "/profile",
+    href: "/dashboard/profile",
   },
 ];
 
 export const SidebarNavigation = () => {
   const pathname = usePathname();
+
+  const authDispatch = useAuthDispatch();
 
   return (
     <VStack alignItems="flex-start" justifyContent="space-between" padding={8}>
@@ -64,6 +67,7 @@ export const SidebarNavigation = () => {
         _hover={{
           bg: "brand.800",
         }}
+        onClick={() => authDispatch(authLogout())}
       >
         Log out
       </Button>
