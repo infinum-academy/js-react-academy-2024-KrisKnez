@@ -10,7 +10,12 @@ export const TopRatedShowList = () => {
     getShowsTopRated
   );
 
-  if (isLoading) {
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+
+  if (isLoading || !data) {
     return (
       <VStack py={16}>
         <Spinner size="xl" />
@@ -18,9 +23,6 @@ export const TopRatedShowList = () => {
     );
   }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  return <ShowList shows={data!.shows} />;
+  
+  return <ShowList shows={data.shows} />;
 };

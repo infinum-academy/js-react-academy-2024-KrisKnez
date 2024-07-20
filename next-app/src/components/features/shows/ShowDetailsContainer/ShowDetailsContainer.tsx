@@ -16,7 +16,11 @@ export const ShowDetailsContainer = ({ showId }: ShowDetailsContainerProps) => {
     getShowById(showId)
   );
 
-  if (isLoading) {
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+  
+  if (isLoading || !data) {
     return (
       <VStack py={16}>
         <Spinner size="xl" />
@@ -24,9 +28,6 @@ export const ShowDetailsContainer = ({ showId }: ShowDetailsContainerProps) => {
     );
   }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
 
-  return <ShowDetails show={data!} />;
+  return <ShowDetails show={data} />;
 };
