@@ -8,15 +8,7 @@ import { useParams } from "next/navigation";
 import React from "react";
 
 const AllShowsByIdPage = () => {
-  const { id } = useParams();
-
-  if (typeof id !== "string") {
-    return (
-      <VStack py={16}>
-        <Heading>Invalid show ID</Heading>
-      </VStack>
-    );
-  }
+  const { id } = useParams<{ id: string }>();
 
   return (
     <VStack alignItems="stretch" spacing={24}>
