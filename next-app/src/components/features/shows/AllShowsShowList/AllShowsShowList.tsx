@@ -24,7 +24,11 @@ export const AllShowsShowList = () => {
     ([url, init]) => fetcher(url, init)
   );
 
-  if (isLoading) {
+  if (error) {
+    return <div>Error: {error.errors}</div>;
+  }
+
+  if (isLoading || !data) {
     return (
       <VStack py={16}>
         <Spinner size="xl" />
@@ -32,9 +36,5 @@ export const AllShowsShowList = () => {
     );
   }
 
-  if (error) {
-    return <div>Error: {error.errors}</div>;
-  }
-
-  return <ShowList shows={data!.shows} />;
+  return <ShowList shows={data.shows} />;
 };

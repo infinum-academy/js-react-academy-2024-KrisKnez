@@ -29,7 +29,11 @@ export const ShowDetailsContainer = ({ showId }: ShowDetailsContainerProps) => {
     ([url, init]) => fetcher(url, init)
   );
 
-  if (isLoading) {
+  if (error) {
+    return <div>Error: {error.errors}</div>;
+  }
+  
+  if (isLoading || !data) {
     return (
       <VStack py={16}>
         <Spinner size="xl" />
@@ -39,9 +43,6 @@ export const ShowDetailsContainer = ({ showId }: ShowDetailsContainerProps) => {
 
   console.log(error);
 
-  if (error) {
-    return <div>Error: {error.errors}</div>;
-  }
 
-  return <ShowDetails show={data!.show} />;
+  return <ShowDetails show={data.show} />;
 };
