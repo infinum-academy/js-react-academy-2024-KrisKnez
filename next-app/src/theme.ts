@@ -2,6 +2,7 @@ import { inputAnatomy } from "@chakra-ui/anatomy";
 import {
   createMultiStyleConfigHelpers,
   extendTheme,
+  InputGroup,
   ThemeConfig,
 } from "@chakra-ui/react";
 
@@ -10,7 +11,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 export const theme = extendTheme({
   config: {
-    initialColorMode: "dark",
+    initialColorMode: "light",
     useSystemColorMode: false,
   },
   styles: {
@@ -18,6 +19,7 @@ export const theme = extendTheme({
       body: {
         bg: "brand.900",
         color: "white",
+        fontFamily: "Roboto, sans-serif",
       },
     }),
   },
@@ -51,5 +53,10 @@ export const theme = extendTheme({
         },
       },
     }),
+    // InputGroup: {
+    //   baseStyle: {
+    //     color: 'white', // Default color for InputGroup
+    //   },
+    // },
   },
 }) as ThemeConfig;
