@@ -18,7 +18,7 @@ interface ShowReviewSectionProps {
 export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
   showId,
 }) => {
-  const { trigger } = useSWRMutation<any, any, string, RequestInit>(
+  const { trigger, isMutating } = useSWRMutation<any, any, string, RequestInit>(
     swrKeys.reviews,
     (key, options) => mutator(key, options.arg)
   );
@@ -38,6 +38,7 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
       <Heading size="lg">Reviews</Heading>
       <VStack flexGrow={1} alignItems="stretch" spacing={16}>
         <ReviewForm
+          isDisabled={isMutating}
           onSubmit={async (form, data) => {
             try {
               await trigger({
@@ -51,10 +52,12 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
               toast.success("Review added successfully");
               form.reset();
             } catch (e) {
-              if (e instanceof Error)
-                e.message
-                  .split(", ")
-                  .map((errorMessage) => toast.error(errorMessage));
+              if (e as IErrorResponse) {
+                const errorResponse = e as IErrorResponse;
+                errorResponse.errors.map((errorMessage) =>
+                  toast.error(errorMessage)
+                );
+              }
             }
           }}
         />
