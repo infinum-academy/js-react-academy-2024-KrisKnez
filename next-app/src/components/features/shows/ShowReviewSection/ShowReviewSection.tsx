@@ -18,9 +18,9 @@ interface ShowReviewSectionProps {
 export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
   showId,
 }) => {
-  const { trigger, isMutating } = useSWRMutation<any, any, string, RequestInit>(
+  const { trigger, isMutating } = useSWRMutation(
     swrKeys.reviews,
-    (key, options) => mutator(key, options.arg)
+    mutator
   );
 
   const { data, isLoading, error } = useSWR<

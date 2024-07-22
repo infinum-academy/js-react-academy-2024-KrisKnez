@@ -23,17 +23,15 @@ import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
 import { IUser } from "@/typings/user";
 import { IErrorResponse } from "@/typings/errors";
-import { ILoginFetcherRequest, loginFetcher } from "@/fetchers/loginFetcher";
+import { loginFetcher } from "@/fetchers/loginFetcher";
 
 export const LoginCard = () => {
   const formId = useId();
 
-  const { trigger, isMutating } = useSWRMutation<
-    any,
-    any,
-    string,
-    ILoginFetcherRequest
-  >(swrKeys.usersSignIn, (key, options) => loginFetcher(key, options));
+  const { trigger, isMutating } = useSWRMutation(
+    swrKeys.usersSignIn,
+    loginFetcher
+  );
 
   return (
     <Card bg="brand.800" p={8}>

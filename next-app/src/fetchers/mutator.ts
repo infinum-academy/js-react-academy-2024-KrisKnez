@@ -1,8 +1,12 @@
 import { fetcher } from "./fetcher";
 
+interface MutatorOptions {
+  arg?: RequestInit;
+}
+
 export const mutator = async <JSON = any>(
   input: RequestInfo,
-  init?: RequestInit
+  { arg: init }: MutatorOptions
 ) => {
   const headers = {
     "Content-Type": "application/json",

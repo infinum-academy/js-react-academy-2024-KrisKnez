@@ -22,9 +22,9 @@ import { IErrorResponse } from "@/typings/errors";
 export const RegistrationCard = () => {
   const formId = useId();
 
-  const { trigger, isMutating } = useSWRMutation<any, any, string, RequestInit>(
+  const { trigger, isMutating } = useSWRMutation(
     swrKeys.users,
-    (key, options) => mutator(key, options.arg)
+    mutator
   );
 
   return (
