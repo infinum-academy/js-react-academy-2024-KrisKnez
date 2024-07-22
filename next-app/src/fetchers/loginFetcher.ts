@@ -1,19 +1,19 @@
+import { IUser } from "@/typings/user";
+import { IAuthData } from "@/utils/authLocalStorage";
+
+export interface ILoginFetcherRequest {
+  email: string;
+  password: string;
+}
 export interface ILoginFetcherResponse {
-  user: {
-    id: string;
-    email: string;
-    image_url: string | null;
-  };
-  authData: {
-    client: string;
-    accessToken: string;
-    uid: string;
-  };
+  user: IUser;
+  authData: IAuthData;
 }
 
+// We need a special fetcher for the login process because we need to access data from the headers.
 export const loginFetcher = async (
   url: string,
-  { arg }: { arg: any }
+  { arg }: { arg: ILoginFetcherRequest }
 ): Promise<ILoginFetcherResponse> => {
   const res = await fetch(url, {
     method: "POST",
@@ -26,15 +26,7 @@ export const loginFetcher = async (
   // If the status code is not in the range 200-299,
   // we still try to parse and throw it.
   if (!res.ok) {
-    const response = await res.json();
-
-    // Common Error Response
-    if (
-      Array.isArray(response.errors) &&
-      typeof response.errors[0] === "string"
-    )
-      throw new Error(response.errors);
-    else throw new Error("Unknown error");
+    throw await res.json();
   }
 
   const responseJson = await res.json();

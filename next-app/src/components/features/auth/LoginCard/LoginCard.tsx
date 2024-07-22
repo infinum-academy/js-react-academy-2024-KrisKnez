@@ -18,19 +18,22 @@ import { Link } from "@chakra-ui/next-js";
 import { LoginForm } from "../LoginForm/LoginForm";
 import toast from "react-hot-toast";
 import { swrKeys } from "@/fetchers/swrKeys";
-import { loginFetcher } from "@/fetchers/loginFetcher";
 import { authLocalStorage } from "@/utils/authLocalStorage";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
 import { IUser } from "@/typings/user";
+import { IErrorResponse } from "@/typings/errors";
+import { ILoginFetcherRequest, loginFetcher } from "@/fetchers/loginFetcher";
 
 export const LoginCard = () => {
   const formId = useId();
 
-  const { trigger, isMutating } = useSWRMutation(
-    swrKeys.usersSignIn,
-    loginFetcher
-  );
+  const { trigger, isMutating } = useSWRMutation<
+    any,
+    any,
+    string,
+    ILoginFetcherRequest
+  >(swrKeys.usersSignIn, (key, options) => loginFetcher(key, options));
 
   return (
     <Card bg="brand.800" p={8}>
@@ -46,19 +49,24 @@ export const LoginCard = () => {
         <VStack spacing={8} alignItems="stretch">
           <LoginForm
             formId={formId}
-            onSubmit={async (data) => {
+            onSubmit={async ({ email, password }) => {
               try {
-                const result = await trigger(data);
+                const result = await trigger({
+                  email,
+                  password,
+                });
 
                 authLocalStorage.setAuthData(result.authData);
                 mutate<IUser>(swrKeys.usersMe, result.user);
 
                 toast.success("Successfully logged in!");
               } catch (e) {
-                if (e instanceof Error)
-                  e.message
-                    .split(", ")
-                    .map((errorMessage) => toast.error(errorMessage));
+                if ((e as IErrorResponse).errors) {
+                  const errorResponse = e as IErrorResponse;
+                  errorResponse.errors.map((errorMessage) =>
+                    toast.error(errorMessage)
+                  );
+                }
               }
             }}
           />

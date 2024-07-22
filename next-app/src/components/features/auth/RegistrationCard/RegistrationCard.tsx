@@ -8,7 +8,6 @@ import {
   Heading,
   HStack,
   Text,
-  Toast,
   VStack,
 } from "@chakra-ui/react";
 import React, { useId } from "react";
@@ -18,11 +17,15 @@ import useSWRMutation from "swr/mutation";
 import { swrKeys } from "@/fetchers/swrKeys";
 import { mutator } from "@/fetchers/mutator";
 import toast from "react-hot-toast";
+import { IErrorResponse } from "@/typings/errors";
 
 export const RegistrationCard = () => {
   const formId = useId();
 
-  const { trigger, isMutating } = useSWRMutation(swrKeys.users, mutator);
+  const { trigger, isMutating } = useSWRMutation<any, any, string, RequestInit>(
+    swrKeys.users,
+    (key, options) => mutator(key, options.arg)
+  );
 
   return (
     <Card bg="brand.800" p={8}>
@@ -40,14 +43,18 @@ export const RegistrationCard = () => {
             formId={formId}
             onSubmit={async (data) => {
               try {
-                await trigger(data);
+                await trigger({
+                  body: JSON.stringify(data),
+                });
 
                 toast.success("Successfully signed up!");
               } catch (e) {
-                if (e instanceof Error)
-                  e.message
-                    .split(", ")
-                    .map((errorMessage) => toast.error(errorMessage));
+                if ((e as IErrorResponse).errors) {
+                  const errorResponse = e as IErrorResponse;
+                  errorResponse.errors.map((errorMessage) =>
+                    toast.error(errorMessage)
+                  );
+                }
               }
             }}
           />
