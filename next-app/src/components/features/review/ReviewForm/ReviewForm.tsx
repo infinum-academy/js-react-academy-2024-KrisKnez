@@ -23,9 +23,10 @@ interface ReviewFormProps {
     form: UseFormReturn<ReviewFormFields, any, undefined>,
     data: ReviewFormFields
   ) => void;
+  isDisabled?: boolean;
 }
 
-const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
+const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit, isDisabled }) => {
   const form = useForm<ReviewFormFields>({
     defaultValues: {
       comment: "",
@@ -69,7 +70,13 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
             onChange={(rating) => setValue("rating", rating)}
           />
         </Box>
-        <Button type="submit" colorScheme="gray" fontSize="sm" minW={130}>
+        <Button
+          type="submit"
+          colorScheme="gray"
+          fontSize="sm"
+          minW={130}
+          isDisabled={isDisabled}
+        >
           Post
         </Button>
       </HStack>
