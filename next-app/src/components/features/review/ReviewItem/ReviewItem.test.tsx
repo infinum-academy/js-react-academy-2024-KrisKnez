@@ -1,23 +1,23 @@
-import { IReview } from "@/typings/review";
+import React from "react";
 import "@testing-library/jest-dom";
-import { render, screen, waitFor, act } from "@testing-library/react";
-import { mutate } from "swr";
-import { mutator } from "@/fetchers/mutator";
+
+import { render, screen, act, waitFor } from "@testing-library/react";
 import { ReviewItem } from "./ReviewItem";
-
-// Mocking the swr and fetcher functions
-// This is used inside the ReviewItem component to check the currently logged in user and show the delete button
-jest.mock("../../../../fetchers/fetcher", () => ({
-  fetcher: jest.fn(() => Promise.resolve({ user: { id: "1" } })),
-}));
-
-jest.mock("swr", () => ({
-  mutate: jest.fn(),
-}));
+import { IReview } from "@/typings/review";
+import { mutator } from "@/fetchers/mutator";
+import { mutate } from "swr";
 
 jest.mock("@/fetchers/mutator", () => ({
   mutator: jest.fn(),
 }));
+
+jest.mock("swr", () => {
+  return {
+    __esModule: true,
+    default: jest.fn(() => ({ data: { user: { id: "1" } } })),
+    mutate: jest.fn(),
+  };
+});
 
 describe("ReviewItem component", () => {
   const mockReview: IReview = {

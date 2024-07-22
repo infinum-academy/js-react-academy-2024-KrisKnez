@@ -25,10 +25,7 @@ export const ReviewItem = ({ review }: IReviewItemProps) => {
   const { data: user } = useSWR(swrKeys.usersMe, fetcher<{ user: IUser }>);
   const userIsAuthor = review.user.id === user?.user.id;
 
-  const { trigger } = useSWRMutation(
-    swrKeys.reviewById(review.id),
-    mutator
-  );
+  const { trigger } = useSWRMutation(swrKeys.reviewById(review.id), mutator);
 
   const handleDelete = async () => {
     await trigger({
