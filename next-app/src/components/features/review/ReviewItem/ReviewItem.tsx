@@ -10,13 +10,36 @@ import {
   Text,
 } from "@chakra-ui/react";
 import RatingInput from "@/components/shared/RatingInput/RatingInput";
+import useSWR, { mutate } from "swr";
+import { swrKeys } from "@/fetchers/swrKeys";
+import { fetcher } from "@/fetchers/fetcher";
+import { IUser } from "@/typings/user";
+import useSWRMutation from "swr/mutation";
+import { mutator } from "@/fetchers/mutator";
 
 interface IReviewItemProps {
   review: IReview;
-  onDelete?: (review: IReview) => void;
 }
 
-const ReviewItem = ({ review, onDelete }: IReviewItemProps) => {
+export const ReviewItem = ({ review }: IReviewItemProps) => {
+  const { data: user } = useSWR(swrKeys.usersMe, fetcher<{ user: IUser }>);
+  const userIsAuthor = review.user.id === user?.user.id;
+
+  const { trigger } = useSWRMutation<any, any, string, RequestInit>(
+    swrKeys.reviewById(review.id),
+    (key, options) => mutator(key, options.arg)
+  );
+
+  const handleDelete = async () => {
+    await trigger({
+      method: "DELETE",
+      body: JSON.stringify({
+        id: review.id,
+      }),
+    });
+    mutate(swrKeys.showByIdReviews(review.show_id.toString()));
+  };
+
   return (
     <Card bg="brand.800" color="white">
       <CardBody>
@@ -26,12 +49,8 @@ const ReviewItem = ({ review, onDelete }: IReviewItemProps) => {
         </Stack>
       </CardBody>
       <CardFooter>
-        {onDelete && (
-          <Button
-            fontSize="sm"
-            colorScheme="gray"
-            onClick={() => onDelete(review)}
-          >
+        {userIsAuthor && (
+          <Button fontSize="sm" colorScheme="gray" onClick={handleDelete}>
             Remove
           </Button>
         )}
@@ -39,5 +58,3 @@ const ReviewItem = ({ review, onDelete }: IReviewItemProps) => {
     </Card>
   );
 };
-
-export default ReviewItem;

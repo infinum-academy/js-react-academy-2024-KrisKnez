@@ -15,8 +15,8 @@ export const ShowDetails = ({ show }: ShowDetailsProps) => {
     <Card overflow="hidden">
       <Box position="relative" width="100%" height="400px">
         <Image
-          // src={show.image_url || "https://fakeimg.pl/600x400"}
-          src={"https://fakeimg.pl/600x400"}
+          src={show.image_url || "https://fakeimg.pl/600x400"}
+          // src={"https://fakeimg.pl/600x400"}
           alt={show.title}
           fill
           sx={{ objectFit: "cover" }}
@@ -30,7 +30,9 @@ export const ShowDetails = ({ show }: ShowDetailsProps) => {
           {show.description}
         </Text>
         <Text pt="2" fontWeight="bold" color="brand.800">
-          {show.average_rating ? `${show.average_rating.toFixed(1)} / 5` : "No ratings"}
+          {show.average_rating
+            ? `${show.average_rating.toFixed(1)} / 5`
+            : "No ratings"}
         </Text>
       </CardBody>
     </Card>
