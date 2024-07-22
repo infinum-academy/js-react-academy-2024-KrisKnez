@@ -13,7 +13,7 @@ import RatingInput from "@/components/shared/RatingInput/RatingInput";
 
 interface IReviewItemProps {
   review: IReview;
-  onDelete: (review: IReview) => void;
+  onDelete?: (review: IReview) => void;
 }
 
 const ReviewItem = ({ review, onDelete }: IReviewItemProps) => {
@@ -26,13 +26,15 @@ const ReviewItem = ({ review, onDelete }: IReviewItemProps) => {
         </Stack>
       </CardBody>
       <CardFooter>
-        <Button
-          fontSize="sm"
-          colorScheme="gray"
-          onClick={() => onDelete(review)}
-        >
-          Remove
-        </Button>
+        {onDelete && (
+          <Button
+            fontSize="sm"
+            colorScheme="gray"
+            onClick={() => onDelete(review)}
+          >
+            Remove
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

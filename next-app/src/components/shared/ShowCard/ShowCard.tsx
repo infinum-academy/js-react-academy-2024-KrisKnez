@@ -15,8 +15,8 @@ const ShowCard = ({ show }: IShowCardProps) => {
     <Card overflow="hidden" flexGrow={1}>
       <Box position="relative" width="100%" flexGrow={1}>
         <Image
-          src={show.image_url || "https://fakeimg.pl/600x400"}
-          // src={"https://fakeimg.pl/600x400"}
+          // src={show.image_url || "https://fakeimg.pl/600x400"}
+          src={"https://fakeimg.pl/600x400"}
           alt={show.title}
           fill
           sx={{ objectFit: "cover" }}

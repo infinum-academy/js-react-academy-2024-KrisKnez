@@ -3,12 +3,13 @@ import ReviewForm from "../../review/ReviewForm/ReviewForm";
 import ReviewList from "../../review/ReviewList/ReviewList";
 import { IReviewsResponse } from "@/typings/review";
 import { Heading, HStack, VStack } from "@chakra-ui/react";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { IErrorResponse } from "@/typings/errors";
 import { swrKeys } from "@/fetchers/swrKeys";
 import { fetcher } from "@/fetchers/fetcher";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
+import { mutator } from "@/fetchers/mutator";
 
 interface ShowReviewSectionProps {
   showId: string;
@@ -19,7 +20,7 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
 }) => {
   const { trigger } = useSWRMutation<any, any, string, RequestInit>(
     swrKeys.reviews,
-    (key, options) => fetcher(key, options.arg)
+    (key, options) => mutator(key, options.arg)
   );
 
   const { data, isLoading, error } = useSWR<
@@ -40,9 +41,13 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
           onSubmit={async (form, data) => {
             try {
               await trigger({
-                method: "POST",
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                  ...data,
+                  rating: data.rating.toString(),
+                  show_id: parseInt(showId),
+                }),
               });
+              mutate(swrKeys.showByIdReviews(showId));
               toast.success("Review added successfully");
               form.reset();
             } catch (e) {
