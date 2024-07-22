@@ -3,16 +3,31 @@ import React from "react";
 
 import BrooklynNineNineImage from "@/assets/images/brooklyn-nine-nine.webp";
 import { ShowDetails } from "../ShowDetails/ShowDetails";
+import useSWR from "swr";
+import { getShowById, getShowByIdKey } from "@/fetchers/shows";
+import { Spinner, VStack } from "@chakra-ui/react";
 
-// Brooklyn Nine-Nine
-const show: IShow = {
-  title: "Brooklyn Nine-Nine",
-  description:
-    "Comedy series following the exploits of Det. Jake Peralta and his diverse, lovable colleagues as they police the NYPD's 99th Precinct.",
-  imageUrl: BrooklynNineNineImage.src,
-  averageRating: 4.2,
-};
+interface ShowDetailsContainerProps {
+  showId: string;
+}
 
-export const ShowDetailsContainer = () => {
-  return <ShowDetails show={show} />;
+export const ShowDetailsContainer = ({ showId }: ShowDetailsContainerProps) => {
+  const { data, isLoading, error } = useSWR(getShowByIdKey(showId), () =>
+    getShowById(showId)
+  );
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+  
+  if (isLoading || !data) {
+    return (
+      <VStack py={16}>
+        <Spinner size="xl" />
+      </VStack>
+    );
+  }
+
+
+  return <ShowDetails show={data} />;
 };

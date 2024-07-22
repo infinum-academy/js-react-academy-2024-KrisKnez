@@ -117,12 +117,13 @@ export const deleteReview = (review: IReview): IDeleteReviewAction => ({
 });
 
 // Helper functions
-export const getAverageRating = (state: IState): number => {
-  const totalReviews = state.reviews.length;
+export const getReviewsByShowId = (state: IState, showId: string): IReview[] =>
+  state.reviews.filter((review) => review.showId === showId);
+
+export const getAverageRating = (state: IState, showId: string): number => {
+  const reviews = getReviewsByShowId(state, showId);
+  const totalReviews = reviews.length;
   if (totalReviews === 0) return 0;
-  const sumOfRatings = state.reviews.reduce(
-    (sum, review) => sum + review.rating,
-    0
-  );
+  const sumOfRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
   return sumOfRatings / totalReviews;
 };

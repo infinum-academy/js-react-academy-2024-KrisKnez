@@ -10,18 +10,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import RatingInput from "@/components/shared/RatingInput/RatingInput";
-import {
-  deleteReview,
-  useReviewDispatch,
-} from "@/contexts/review/ReviewContext";
 
 interface IReviewItemProps {
   review: IReview;
+  onDelete: (review: IReview) => void;
 }
 
-const ReviewItem = ({ review }: IReviewItemProps) => {
-  const reviewDispatch = useReviewDispatch();
-
+const ReviewItem = ({ review, onDelete }: IReviewItemProps) => {
   return (
     <Card bg="brand.800" color="white">
       <CardBody>
@@ -34,7 +29,7 @@ const ReviewItem = ({ review }: IReviewItemProps) => {
         <Button
           fontSize="sm"
           colorScheme="gray"
-          onClick={() => reviewDispatch(deleteReview(review))}
+          onClick={() => onDelete(review)}
         >
           Remove
         </Button>

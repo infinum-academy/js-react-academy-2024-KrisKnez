@@ -1,7 +1,15 @@
 "use client";
 
 import RatingInput from "@/components/shared/RatingInput/RatingInput";
-import { Box, Button, Heading, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Stack,
+  Textarea,
+  VStack,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 
 interface ReviewFormProps {
@@ -12,9 +20,10 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
   const [rating, setRating] = useState(5);
 
   return (
-    <Stack
+    <VStack
       as="form"
-      alignItems="flex-start"
+      alignItems="stretch"
+      spacing={6}
       onSubmit={(event) => {
         event.preventDefault();
 
@@ -31,9 +40,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
         form.reset();
       }}
     >
-      <Heading as="h2" size="md">
-        Reviews
-      </Heading>
       <Textarea
         name="comment"
         required
@@ -41,20 +47,24 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
         maxH={200}
         bg="white"
         color="black"
+        borderRadius={24}
+        padding={4}
       />
-      <Box p={2}>
-        <RatingInput
-          label={`${rating} / 5`}
-          value={rating}
-          onChange={(rating) => {
-            setRating(rating);
-          }}
-        />
-      </Box>
-      <Button type="submit" colorScheme="gray" fontSize="sm">
-        Post
-      </Button>
-    </Stack>
+      <HStack alignItems="flex-start" justifyContent="space-between">
+        <Box p={2}>
+          <RatingInput
+            label={`${rating} / 5`}
+            value={rating}
+            onChange={(rating) => {
+              setRating(rating);
+            }}
+          />
+        </Box>
+        <Button type="submit" colorScheme="gray" fontSize="sm" minW={130}>
+          Post
+        </Button>
+      </HStack>
+    </VStack>
   );
 };
 

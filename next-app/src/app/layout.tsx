@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
+import { Box } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,10 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <Box as="html" lang="en" height="100%">
+      <Box as="body" height="100%">
         <Providers>{children}</Providers>
-      </body>
-    </html>
+      </Box>
+    </Box>
   );
 }
