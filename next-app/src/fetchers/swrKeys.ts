@@ -2,6 +2,7 @@ const baseUrl = "https://tv-shows.infinum.academy/";
 
 export const swrKeys = {
   users: `${baseUrl}users`,
+  usersMe: `${baseUrl}users/me`,
   usersSignIn: `${baseUrl}users/sign_in`,
   shows: `${baseUrl}shows`,
   showById: (id: string) => `${baseUrl}shows/${id}`,

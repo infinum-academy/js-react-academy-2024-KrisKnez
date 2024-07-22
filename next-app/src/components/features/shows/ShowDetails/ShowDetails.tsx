@@ -23,6 +23,7 @@ export const ShowDetails = ({ show }: ShowDetailsProps) => {
       <Box position="relative" width="100%" height="400px">
         <Image
           src={show.image_url || "https://fakeimg.pl/600x400"}
+          // src={"https://fakeimg.pl/600x400"}
           alt={show.title}
           fill
           sx={{ objectFit: "cover" }}

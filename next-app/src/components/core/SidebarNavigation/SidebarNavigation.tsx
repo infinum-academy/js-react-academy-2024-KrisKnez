@@ -1,10 +1,12 @@
 "use client";
 
-import { authLogout, useAuthDispatch } from "@/contexts/auth/AuthContext";
+import { swrKeys } from "@/fetchers/swrKeys";
+import { authLocalStorage } from "@/utils/authLocalStorage";
 import { Button, Heading, VStack } from "@chakra-ui/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { mutate, useSWRConfig } from "swr";
 
 interface ISidebarItem {
   label: string;
@@ -28,8 +30,6 @@ const SIDEBAR_ITEMS = [
 
 export const SidebarNavigation = () => {
   const pathname = usePathname();
-
-  const authDispatch = useAuthDispatch();
 
   return (
     <VStack alignItems="flex-start" justifyContent="space-between" padding={8}>
@@ -67,7 +67,10 @@ export const SidebarNavigation = () => {
         _hover={{
           bg: "brand.800",
         }}
-        onClick={() => authDispatch(authLogout())}
+        onClick={() => {
+          authLocalStorage.setAuthData(null);
+          mutate(swrKeys.usersMe, null);
+        }}
       >
         Log out
       </Button>

@@ -1,25 +1,13 @@
 "use client";
 
-import { Spinner, VStack } from "@chakra-ui/react";
+import { AuthRedirect } from "@/components/core/AuthRedirect/AuthRedirect";
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { isLoggedIn, useAuthState } from "@/contexts/auth/AuthContext";
-
-export default function Home() {
-  const router = useRouter();
-
-  const authState = useAuthState();
-
-  useEffect(() => {
-    const loggedIn = isLoggedIn(authState);
-    if (loggedIn === true) router.push("/dashboard");
-    else if (loggedIn === false) router.push("/auth");
-  }, [authState, router]);
-
+const Home = () => {
   return (
-    <VStack py={16}>
-      <Spinner size="xl" />
-    </VStack>
+    <AuthRedirect to="/auth" condition="isLoggedIn">
+      <AuthRedirect to="/dashboard" condition="isNotLoggedIn"></AuthRedirect>
+    </AuthRedirect>
   );
-}
+};
+
+export default Home;

@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <AuthRedirect condition="isLoggedIn">
+    <AuthRedirect to="/auth" condition="isLoggedIn">
       <HStack spacing={4} alignItems="stretch" height="100%">
         <SidebarNavigation />
         <Box flexGrow={1} overflowY="auto">

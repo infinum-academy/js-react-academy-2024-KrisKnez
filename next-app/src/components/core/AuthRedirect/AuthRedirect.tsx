@@ -1,36 +1,46 @@
 "use client";
 
-import { isLoggedIn, useAuthState } from "@/contexts/auth/AuthContext";
-import { Spinner, VStack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
+import useSWR from "swr";
+import { swrKeys } from "@/fetchers/swrKeys";
+import { fetcher } from "@/fetchers/fetcher";
+import { Spinner, VStack } from "@chakra-ui/react";
 
 interface AuthRedirectProps {
+  to: string;
   condition: "isLoggedIn" | "isNotLoggedIn";
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-export const AuthRedirect = ({ condition, children }: AuthRedirectProps) => {
+export const AuthRedirect = ({
+  to,
+  condition,
+  children,
+}: AuthRedirectProps) => {
   const router = useRouter();
-
-  const authState = useAuthState();
-
-  const loggedIn = isLoggedIn(authState);
-  const redirectToLogin = condition === "isLoggedIn" && loggedIn === false;
-  const redirectToDashboard =
-    condition === "isNotLoggedIn" && loggedIn === true;
+  const { isLoading, data } = useSWR(swrKeys.usersMe, fetcher, {});
+  const [showSpinner, setShowSpinner] = useState(true);
 
   useEffect(() => {
-    if (redirectToLogin) router.push("/auth");
-    else if (redirectToDashboard) router.push("/dashboard");
-  }, [redirectToDashboard, redirectToLogin, router]);
+    if (isLoading) return;
 
-  if (loggedIn === null || redirectToLogin || redirectToDashboard)
+    if (condition === "isNotLoggedIn" && data) {
+      router.push(to);
+    } else if (condition === "isLoggedIn" && !data) {
+      router.push(to);
+    } else {
+      setShowSpinner(false);
+    }
+  }, [isLoading, data, condition, router]);
+
+  if (showSpinner)
     return (
       <VStack py={16}>
         <Spinner size="xl" />
       </VStack>
     );
 
-  return children;
+  return <>{children}</>;
 };

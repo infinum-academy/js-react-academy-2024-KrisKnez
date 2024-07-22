@@ -1,5 +1,4 @@
 import ShowList from "@/components/shared/ShowList/ShowList";
-import { getHeaders, useAuthState } from "@/contexts/auth/AuthContext";
 import { fetcher } from "@/fetchers/fetcher";
 import { swrKeys } from "@/fetchers/swrKeys";
 import { IErrorResponse } from "@/typings/errors";
@@ -9,19 +8,13 @@ import React from "react";
 import useSWR from "swr";
 
 export const AllShowsShowList = () => {
-  const authState = useAuthState();
   const { data, isLoading, error } = useSWR<
     IShowsResponse,
     IErrorResponse,
-    [RequestInfo, RequestInit]
+    string
   >(
-    [
-      swrKeys.shows,
-      {
-        headers: getHeaders(authState)!,
-      },
-    ],
-    ([url, init]) => fetcher(url, init)
+    swrKeys.shows,
+    (url) => fetcher(url)
   );
 
   if (error) {

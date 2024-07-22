@@ -3,13 +3,11 @@ import ReviewForm from "../../review/ReviewForm/ReviewForm";
 import ReviewList from "../../review/ReviewList/ReviewList";
 import { IReviewsResponse } from "@/typings/review";
 import { Heading, HStack, VStack } from "@chakra-ui/react";
-import { getHeaders, useAuthState } from "@/contexts/auth/AuthContext";
 import useSWR from "swr";
 import { IErrorResponse } from "@/typings/errors";
 import { swrKeys } from "@/fetchers/swrKeys";
 import { fetcher } from "@/fetchers/fetcher";
 import useSWRMutation from "swr/mutation";
-import { mutator } from "@/fetchers/mutator";
 import toast from "react-hot-toast";
 
 interface ShowReviewSectionProps {
@@ -19,31 +17,20 @@ interface ShowReviewSectionProps {
 export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
   showId,
 }) => {
-  const authState = useAuthState();
-
-  const { trigger } = useSWRMutation(swrKeys.reviews, mutator);
+  const { trigger } = useSWRMutation<any, any, string, RequestInit>(
+    swrKeys.reviews,
+    (key, options) => fetcher(key, options.arg)
+  );
 
   const { data, isLoading, error } = useSWR<
     IReviewsResponse,
     IErrorResponse,
-    [RequestInfo, RequestInit]
-  >(
-    [
-      swrKeys.showByIdReviews(showId),
-      {
-        headers: getHeaders(authState)!,
-      },
-    ],
-    ([url, init]) => fetcher(url, init)
-  );
+    string
+  >(swrKeys.showByIdReviews(showId), fetcher);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (error) return <div>Error: {error.errors}</div>;
 
-  if (error) {
-    return <div>Error: {error.errors}</div>;
-  }
+  if (isLoading || !data) return <div>Loading...</div>;
 
   return (
     <HStack alignItems="flex-start" spacing={24}>
@@ -52,7 +39,10 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
         <ReviewForm
           onSubmit={async (form, data) => {
             try {
-              await trigger(data);
+              await trigger({
+                method: "POST",
+                body: JSON.stringify(data),
+              });
               toast.success("Review added successfully");
               form.reset();
             } catch (e) {
