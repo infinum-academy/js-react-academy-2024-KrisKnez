@@ -5,6 +5,7 @@ import {
 import { cardTheme } from "./components/card";
 import { buttonTheme } from "./components/button";
 import { inputTheme } from "./components/input";
+import { drawerTheme } from "./components/drawer";
 
 const colors = {
   darkPurple: "#1B004C",
@@ -69,6 +70,7 @@ export const theme = extendTheme({
   components: {
     Card: cardTheme,
     Button: buttonTheme,
-    Input: inputTheme
+    Input: inputTheme,
+    Drawer: drawerTheme
   },
 }) as ThemeConfig;

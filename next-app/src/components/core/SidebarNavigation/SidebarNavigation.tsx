@@ -1,69 +1,82 @@
 "use client";
 
-import { swrKeys } from "@/fetchers/swrKeys";
-import { authLocalStorage } from "@/utils/authLocalStorage";
-import { Button, Heading, VStack } from "@chakra-ui/react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React from "react";
-import { mutate, useSWRConfig } from "swr";
+import {
+  chakra,
+  IconButton,
+  Stack,
+  useBreakpointValue,
+  VStack,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { LogoImage } from "../LogoImage/LogoImage";
-
-interface ISidebarItem {
-  label: string;
-  href: string;
-}
-
-const SIDEBAR_ITEMS: Array<ISidebarItem> = [
-  {
-    label: "All shows",
-    href: "/dashboard/all-shows",
-  },
-  {
-    label: "Top rated",
-    href: "/dashboard/top-rated",
-  },
-  {
-    label: "Profile",
-    href: "/dashboard/profile",
-  },
-];
+import { HamburgerIcon } from "@chakra-ui/icons";
+import { MobileDrawer } from "@/components/core/SidebarNavigation/components/MobileDrawer/MobileDrawer";
+import { NavigationMenu } from "./components/NavigationMenu/NavigationMenu";
+import { LogoutButton } from "./components/LogoutButton/LogoutButton";
 
 export const SidebarNavigation = () => {
-  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  useEffect(() => {
+    if (!isMobile) {
+      setMobileMenuOpen(false);
+    }
+  }, [isMobile]);
 
   return (
-    <VStack alignItems="flex-start" justifyContent="space-between" padding={8}>
+    <Stack
+      direction={{
+        base: "row",
+        md: "column",
+      }}
+      alignItems="flex-start"
+      justifyContent="space-between"
+      padding={8}
+    >
       <VStack spacing={16} alignItems="flex-start">
         {/* Logo */}
         <LogoImage width={200} />
 
-        {/* Navigation */}
-        <VStack spacing={1} alignItems="stretch">
-          {SIDEBAR_ITEMS.map(({ label, href }) => {
-            const isActive = pathname === href;
-
-            return (
-              <Link key={href} href={href}>
-                <Button variant={"dark"} isActive={isActive}>
-                  {label}
-                </Button>
-              </Link>
-            );
-          })}
-        </VStack>
+        <chakra.div
+          display={{
+            base: "none",
+            md: "flex",
+          }}
+        >
+          <NavigationMenu />
+        </chakra.div>
       </VStack>
 
       {/* Logout */}
-      <Button
-        variant="dark"
-        onClick={() => {
-          authLocalStorage.setAuthData(null);
-          mutate(swrKeys.usersMe, null);
+      <chakra.div
+        display={{
+          base: "none",
+          md: "flex",
         }}
       >
-        Log out
-      </Button>
-    </VStack>
+        <LogoutButton />
+      </chakra.div>
+
+      <IconButton
+        display={{
+          base: "flex",
+          md: "none",
+        }}
+        aria-label="open sidebar"
+        color={"white"}
+        variant={"transparent"}
+        fontSize="24px"
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      >
+        <HamburgerIcon />
+      </IconButton>
+
+      <MobileDrawer
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      />
+    </Stack>
   );
 };
