@@ -7,13 +7,14 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { mutate, useSWRConfig } from "swr";
+import { LogoImage } from "../LogoImage/LogoImage";
 
 interface ISidebarItem {
   label: string;
   href: string;
 }
 
-const SIDEBAR_ITEMS = [
+const SIDEBAR_ITEMS: Array<ISidebarItem> = [
   {
     label: "All shows",
     href: "/dashboard/all-shows",
@@ -35,7 +36,7 @@ export const SidebarNavigation = () => {
     <VStack alignItems="flex-start" justifyContent="space-between" padding={8}>
       <VStack spacing={16} alignItems="flex-start">
         {/* Logo */}
-        <Heading size="md">TV SHOW APP</Heading>
+        <LogoImage width={200} />
 
         {/* Navigation */}
         <VStack spacing={1} alignItems="stretch">
@@ -44,14 +45,7 @@ export const SidebarNavigation = () => {
 
             return (
               <Link key={href} href={href}>
-                <Button
-                  variant={isActive ? "solid" : "ghost"}
-                  colorScheme="white"
-                  bg={isActive ? "brand.800" : "transparent"}
-                  _hover={{
-                    bg: "brand.800",
-                  }}
-                >
+                <Button variant={"dark"} isActive={isActive}>
                   {label}
                 </Button>
               </Link>
@@ -62,11 +56,7 @@ export const SidebarNavigation = () => {
 
       {/* Logout */}
       <Button
-        variant="ghost"
-        colorScheme="white"
-        _hover={{
-          bg: "brand.800",
-        }}
+        variant="dark"
         onClick={() => {
           authLocalStorage.setAuthData(null);
           mutate(swrKeys.usersMe, null);

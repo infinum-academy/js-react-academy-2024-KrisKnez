@@ -7,6 +7,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  chakra,
   Heading,
   HStack,
   Text,
@@ -24,6 +25,7 @@ import { mutate } from "swr";
 import { IUser } from "@/typings/user";
 import { IErrorResponse } from "@/typings/errors";
 import { loginFetcher } from "@/fetchers/loginFetcher";
+import { LogoImage } from "@/components/core/LogoImage/LogoImage";
 
 export const LoginCard = () => {
   const formId = useId();
@@ -34,17 +36,12 @@ export const LoginCard = () => {
   );
 
   return (
-    <Card bg="brand.800" p={8}>
-      <CardHeader>
-        {/* Logo */}
-        <HStack justifyContent="center">
-          <Heading size="md" color="white">
-            TV SHOW APP
-          </Heading>
-        </HStack>
-      </CardHeader>
+    <Card bg="purple2" p={8}>
       <CardBody>
-        <VStack spacing={8} alignItems="stretch">
+        <VStack spacing={0}>
+          <HStack justifyContent="center" marginBottom={"50px"}>
+            <LogoImage width={200} />
+          </HStack>
           <LoginForm
             formId={formId}
             onSubmit={async ({ email, password }) => {
@@ -69,19 +66,18 @@ export const LoginCard = () => {
             }}
           />
           <Button
+            marginTop="58px"
             type="submit"
             form={formId}
-            size="lg"
-            fontSize="small"
-            color="brand.800"
             isDisabled={isMutating}
+            variant="light"
           >
-            LOGIN
+            <chakra.div>LOG IN</chakra.div>
           </Button>
-          <Text color="white" fontSize="sm" textAlign="center">
+          <Text marginTop="28px" color="white" fontSize="sm" textAlign="center">
             Don&apos;t have an account?{" "}
             <Link href="/auth/register" fontWeight={600}>
-              Sign Up
+              Register
             </Link>
           </Text>
         </VStack>

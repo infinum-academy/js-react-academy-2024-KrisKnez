@@ -37,7 +37,7 @@ export const RegistrationForm = ({
 
   const emailField = (
     <FormControl isInvalid={Boolean(formState.errors.email)}>
-      <InputGroup color="white" size="lg">
+      <InputGroup variant="dark">
         <InputLeftElement pointerEvents="none">
           <Icon as={MdPerson} boxSize={6} />
         </InputLeftElement>
@@ -57,7 +57,7 @@ export const RegistrationForm = ({
 
   const passwordField = (
     <FormControl isInvalid={Boolean(formState.errors.password)}>
-      <InputGroup color="white" size="lg">
+      <InputGroup variant="dark">
         <InputLeftElement pointerEvents="none">
           <Icon as={MdLock} boxSize={6} />
         </InputLeftElement>
@@ -81,7 +81,7 @@ export const RegistrationForm = ({
 
   const passwordConfirmationField = (
     <FormControl isInvalid={Boolean(formState.errors.passwordConfirmation)}>
-      <InputGroup color="white" size="lg">
+      <InputGroup variant="dark">
         <InputLeftElement pointerEvents="none">
           <Icon as={MdLock} boxSize={6} />
         </InputLeftElement>
