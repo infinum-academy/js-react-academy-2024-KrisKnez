@@ -2,7 +2,7 @@ import React from "react";
 import ReviewForm from "../../review/ReviewForm/ReviewForm";
 import ReviewList from "../../review/ReviewList/ReviewList";
 import { IReviewsResponse } from "@/typings/review";
-import { Heading, HStack, VStack } from "@chakra-ui/react";
+import { Heading, HStack, Stack, VStack } from "@chakra-ui/react";
 import useSWR, { mutate } from "swr";
 import { IErrorResponse } from "@/typings/errors";
 import { swrKeys } from "@/fetchers/swrKeys";
@@ -34,7 +34,10 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
   if (isLoading || !data) return <div>Loading...</div>;
 
   return (
-    <HStack alignItems="flex-start" spacing={24}>
+    <Stack direction={{
+      base: "column",
+      md: "row",
+    }} alignItems="stretch" spacing={24}>
       <Heading size="lg">Reviews</Heading>
       <VStack flexGrow={1} alignItems="stretch" spacing={16}>
         <ReviewForm
@@ -63,6 +66,6 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
         />
         <ReviewList reviews={data?.reviews!} />
       </VStack>
-    </HStack>
+    </Stack>
   );
 };
