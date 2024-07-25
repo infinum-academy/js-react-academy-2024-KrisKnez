@@ -3,19 +3,13 @@
 import React from "react";
 
 import {
-  Button,
   chakra,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
   VStack,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { MdLock, MdPerson } from "react-icons/md";
+import { EmailField } from "./components/EmailField/EmailField";
+import { PasswordField } from "./components/PasswordField/PasswordField";
+import { PasswordConfirmationField } from "./components/PasswordConfirmationField/PasswordConfirmationField";
 
 export interface RegistrationFormFields {
   email: string;
@@ -35,78 +29,26 @@ export const RegistrationForm = ({
   const { handleSubmit, register, formState } =
     useForm<RegistrationFormFields>();
 
-  const emailField = (
-    <FormControl isInvalid={Boolean(formState.errors.email)}>
-      <InputGroup color="white" size="lg">
-        <InputLeftElement pointerEvents="none">
-          <Icon as={MdPerson} boxSize={6} />
-        </InputLeftElement>
-        <Input
-          type="email"
-          placeholder="Email"
-          {...register("email", {
-            required: "Email is required",
-          })}
-        />
-      </InputGroup>
-      <FormErrorMessage>{formState.errors.email?.message}</FormErrorMessage>
-    </FormControl>
-  );
-
-  const passwordField = (
-    <FormControl isInvalid={Boolean(formState.errors.password)}>
-      <InputGroup color="white" size="lg">
-        <InputLeftElement pointerEvents="none">
-          <Icon as={MdLock} boxSize={6} />
-        </InputLeftElement>
-        <Input
-          type="password"
-          placeholder="Password"
-          {...register("password", {
-            required: "Password is required",
-            validate: (value) =>
-              value.length >= 8 || "Password must be at least 8 characters",
-          })}
-        />
-      </InputGroup>
-      <FormErrorMessage>{formState.errors.password?.message}</FormErrorMessage>
-      {!formState.errors.password && (
-        <FormHelperText color="white">At least 8 characters</FormHelperText>
-      )}
-    </FormControl>
-  );
-
-  const passwordConfirmationField = (
-    <FormControl isInvalid={Boolean(formState.errors.passwordConfirmation)}>
-      <InputGroup color="white" size="lg">
-        <InputLeftElement pointerEvents="none">
-          <Icon as={MdLock} boxSize={6} />
-        </InputLeftElement>
-        <Input
-          type="password"
-          placeholder="Repeat Password"
-          {...register("passwordConfirmation", {
-            required: "Password confirmation is required",
-          })}
-        />
-      </InputGroup>
-      <FormErrorMessage>
-        {formState.errors.passwordConfirmation?.message}
-      </FormErrorMessage>
-    </FormControl>
-  );
-
   return (
     <chakra.form id={formId} onSubmit={handleSubmit(onSubmit)}>
       <VStack spacing={8}>
         {/* Email field */}
-        {emailField}
+        <EmailField
+          error={formState.errors.email?.message}
+          register={register}
+        />
 
         {/* Password field */}
-        {passwordField}
+        <PasswordField
+          error={formState.errors.email?.message}
+          register={register}
+        />
 
         {/* Password confirmation field */}
-        {passwordConfirmationField}
+        <PasswordConfirmationField
+          error={formState.errors.email?.message}
+          register={register}
+        />
       </VStack>
     </chakra.form>
   );
