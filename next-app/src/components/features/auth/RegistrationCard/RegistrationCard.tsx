@@ -43,9 +43,7 @@ export const RegistrationCard = () => {
             formId={formId}
             onSubmit={async (data) => {
               try {
-                await trigger({
-                  body: JSON.stringify(data),
-                });
+                await trigger(data);
 
                 toast.success("Successfully signed up!");
               } catch (e) {

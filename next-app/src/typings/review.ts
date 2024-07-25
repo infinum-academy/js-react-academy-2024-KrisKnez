@@ -13,3 +13,9 @@ export interface IReviewsResponse {
   reviews: IReview[];
   meta: IMeta;
 }
+
+export interface ICreateReviewRequest {
+  comment: string
+  rating: number
+  show_id: string;
+}

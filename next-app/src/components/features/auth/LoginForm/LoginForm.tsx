@@ -21,7 +21,7 @@ interface LoginFormFields {
 }
 
 interface LoginFormProps {
-  formId: string
+  formId: string;
   onSubmit: (data: LoginFormFields) => void;
 }
 
@@ -42,9 +42,7 @@ export const LoginForm = ({ formId, onSubmit }: LoginFormProps) => {
           })}
         />
       </InputGroup>
-      {formState.errors.email && (
-        <FormErrorMessage>{formState.errors.email.message}</FormErrorMessage>
-      )}
+      <FormErrorMessage>{formState.errors.email?.message}</FormErrorMessage>
     </FormControl>
   );
 
@@ -62,9 +60,7 @@ export const LoginForm = ({ formId, onSubmit }: LoginFormProps) => {
           })}
         />
       </InputGroup>
-      {formState.errors.password && (
-        <FormErrorMessage>{formState.errors.password.message}</FormErrorMessage>
-      )}
+      <FormErrorMessage>{formState.errors.password?.message}</FormErrorMessage>
     </FormControl>
   );
 

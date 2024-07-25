@@ -16,6 +16,7 @@ import { fetcher } from "@/fetchers/fetcher";
 import { IUser } from "@/typings/user";
 import useSWRMutation from "swr/mutation";
 import { mutator } from "@/fetchers/mutator";
+import { deleteReviewMutator } from "@/typings/deleteReviewMutator";
 
 interface IReviewItemProps {
   review: IReview;
@@ -25,15 +26,13 @@ export const ReviewItem = ({ review }: IReviewItemProps) => {
   const { data: user } = useSWR(swrKeys.usersMe, fetcher<{ user: IUser }>);
   const userIsAuthor = review.user.id === user?.user.id;
 
-  const { trigger } = useSWRMutation(swrKeys.reviewById(review.id), mutator);
+  const { trigger } = useSWRMutation(
+    swrKeys.reviewById(review.id),
+    deleteReviewMutator
+  );
 
   const handleDelete = async () => {
-    await trigger({
-      method: "DELETE",
-      body: JSON.stringify({
-        id: review.id,
-      }),
-    });
+    await trigger();
     mutate(swrKeys.showByIdReviews(review.show_id.toString()));
   };
 

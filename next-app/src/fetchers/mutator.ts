@@ -1,21 +1,11 @@
 import { fetcher } from "./fetcher";
 
-interface MutatorOptions {
-  arg?: RequestInit;
-}
-
-export const mutator = async <JSON = any>(
-  input: RequestInfo,
-  { arg: init }: MutatorOptions
-) => {
-  const headers = {
-    "Content-Type": "application/json",
-    ...init?.headers,
-  };
-
-  return fetcher<JSON>(input, {
+export const mutator = async <T, U>(url: string, { arg }: { arg: U }) => {
+  return fetcher<T>(url, {
     method: "POST",
-    ...init,
-    headers,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(arg),
   });
 };

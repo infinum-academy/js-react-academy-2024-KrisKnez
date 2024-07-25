@@ -9,7 +9,7 @@ import { swrKeys } from "@/fetchers/swrKeys";
 import { fetcher } from "@/fetchers/fetcher";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
-import { mutator } from "@/fetchers/mutator";
+import { createReviewMutator } from "@/fetchers/createReviewMutator";
 
 interface ShowReviewSectionProps {
   showId: string;
@@ -18,10 +18,7 @@ interface ShowReviewSectionProps {
 export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
   showId,
 }) => {
-  const { trigger, isMutating } = useSWRMutation(
-    swrKeys.reviews,
-    mutator
-  );
+  const { trigger, isMutating } = useSWRMutation(swrKeys.reviews, createReviewMutator);
 
   const { data, isLoading, error } = useSWR<
     IReviewsResponse,
@@ -41,23 +38,14 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
           isDisabled={isMutating}
           onSubmit={async (form, data) => {
             try {
-              await trigger({
-                body: JSON.stringify({
-                  ...data,
-                  rating: data.rating.toString(),
-                  show_id: parseInt(showId),
-                }),
-              });
+              await trigger({ ...data, show_id: showId });
               mutate(swrKeys.showByIdReviews(showId));
               toast.success("Review added successfully");
               form.reset();
-            } catch (e) {
-              if (e as IErrorResponse) {
-                const errorResponse = e as IErrorResponse;
-                errorResponse.errors.map((errorMessage) =>
-                  toast.error(errorMessage)
-                );
-              }
+            } catch (err: any) {
+              err.errors?.map((errorMessage: string) =>
+                toast.error(errorMessage)
+              );
             }
           }}
         />
