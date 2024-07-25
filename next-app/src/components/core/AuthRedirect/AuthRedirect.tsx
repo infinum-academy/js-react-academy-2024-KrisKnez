@@ -20,7 +20,7 @@ export const AuthRedirect = ({
   children,
 }: AuthRedirectProps) => {
   const router = useRouter();
-  const { isLoading, data } = useSWR(swrKeys.usersMe, fetcher, {});
+  const { isLoading, data } = useSWR(swrKeys.usersMe, fetcher);
   const [showSpinner, setShowSpinner] = useState(true);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const AuthRedirect = ({
     } else {
       setShowSpinner(false);
     }
-  }, [isLoading, data, condition, router]);
+  }, [isLoading, data, condition, router, to]);
 
   if (showSpinner)
     return (

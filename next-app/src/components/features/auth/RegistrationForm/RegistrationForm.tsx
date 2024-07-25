@@ -49,9 +49,7 @@ export const RegistrationForm = ({
           })}
         />
       </InputGroup>
-      {formState.errors.email && (
-        <FormErrorMessage>{formState.errors.email.message}</FormErrorMessage>
-      )}
+      <FormErrorMessage>{formState.errors.email?.message}</FormErrorMessage>
     </FormControl>
   );
 
@@ -71,9 +69,8 @@ export const RegistrationForm = ({
           })}
         />
       </InputGroup>
-      {(formState.errors.password && (
-        <FormErrorMessage>{formState.errors.password.message}</FormErrorMessage>
-      )) || (
+      <FormErrorMessage>{formState.errors.password?.message}</FormErrorMessage>
+      {!formState.errors.password && (
         <FormHelperText color="white">At least 8 characters</FormHelperText>
       )}
     </FormControl>
@@ -93,11 +90,9 @@ export const RegistrationForm = ({
           })}
         />
       </InputGroup>
-      {formState.errors.passwordConfirmation && (
-        <FormErrorMessage>
-          {formState.errors.passwordConfirmation.message}
-        </FormErrorMessage>
-      )}
+      <FormErrorMessage>
+        {formState.errors.passwordConfirmation?.message}
+      </FormErrorMessage>
     </FormControl>
   );
 

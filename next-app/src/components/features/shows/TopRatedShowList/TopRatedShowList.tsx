@@ -13,7 +13,7 @@ export const TopRatedShowList = () => {
     IShowTopRatedResponse,
     IErrorResponse,
     string
-  >(swrKeys.showsTopRated, (url) => fetcher(url));
+  >(swrKeys.showsTopRated, fetcher);
 
   if (error) {
     return <div>Error: {error.errors}</div>;

@@ -1,6 +1,6 @@
 "use client";
 
-interface IAuthData {
+export interface IAuthData {
   client: string;
   accessToken: string;
   uid: string;

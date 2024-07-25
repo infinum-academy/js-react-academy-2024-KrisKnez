@@ -69,7 +69,9 @@ export const SidebarNavigation = () => {
         }}
         onClick={() => {
           authLocalStorage.setAuthData(null);
-          mutate(swrKeys.usersMe, null);
+          mutate(swrKeys.usersMe, null, {
+            revalidate: false,
+          });
         }}
       >
         Log out

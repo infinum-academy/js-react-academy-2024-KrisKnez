@@ -18,19 +18,25 @@ import { Link } from "@chakra-ui/next-js";
 import { LoginForm } from "../LoginForm/LoginForm";
 import toast from "react-hot-toast";
 import { swrKeys } from "@/fetchers/swrKeys";
-import { loginFetcher } from "@/fetchers/loginFetcher";
-import { authLocalStorage } from "@/utils/authLocalStorage";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
-import { IUser } from "@/typings/user";
+import { mutator } from "@/fetchers/mutator";
 
 export const LoginCard = () => {
   const formId = useId();
 
-  const { trigger, isMutating } = useSWRMutation(
-    swrKeys.usersSignIn,
-    loginFetcher
-  );
+  const { trigger, isMutating } = useSWRMutation(swrKeys.usersSignIn, mutator, {
+    onSuccess(data, key, config) {
+      mutate(swrKeys.usersMe, data, {
+        revalidate: false,
+      });
+      toast.success("Successfully logged in!");
+    },
+    onError(err, key, config) {
+      err.errors?.map((errorMessage: string) => toast.error(errorMessage));
+    },
+    throwOnError: false,
+  });
 
   return (
     <Card bg="brand.800" p={8}>
@@ -47,19 +53,7 @@ export const LoginCard = () => {
           <LoginForm
             formId={formId}
             onSubmit={async (data) => {
-              try {
-                const result = await trigger(data);
-
-                authLocalStorage.setAuthData(result.authData);
-                mutate<IUser>(swrKeys.usersMe, result.user);
-
-                toast.success("Successfully logged in!");
-              } catch (e) {
-                if (e instanceof Error)
-                  e.message
-                    .split(", ")
-                    .map((errorMessage) => toast.error(errorMessage));
-              }
+              trigger(data, {});
             }}
           />
           <Button
