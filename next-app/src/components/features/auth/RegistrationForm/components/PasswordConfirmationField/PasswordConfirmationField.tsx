@@ -17,10 +17,10 @@ export const PasswordConfirmationField = ({error, register}: PasswordConfirmatio
           <Icon as={MdPerson} boxSize={6} />
         </InputLeftElement>
         <Input
-          type="email"
-          placeholder="Email"
-          {...register("email", {
-            required: "Email is required",
+          type="password"
+          placeholder="Repeat Password"
+          {...register("passwordConfirmation", {
+            required: "Password confirmation is required",
           })}
         />
       </InputGroup>
