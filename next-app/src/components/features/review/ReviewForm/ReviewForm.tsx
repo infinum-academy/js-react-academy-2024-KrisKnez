@@ -56,11 +56,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit, isDisabled }) => {
             required: "This field is required",
           })}
         />
-        {formState.errors.comment && (
-          <FormErrorMessage>
-            {formState.errors.comment.message}
-          </FormErrorMessage>
-        )}
+        <FormErrorMessage>{formState.errors.comment?.message}</FormErrorMessage>
       </FormControl>
       <HStack alignItems="flex-start" justifyContent="space-between">
         <Box p={2}>

@@ -19,21 +19,26 @@ import { Link } from "@chakra-ui/next-js";
 import { LoginForm } from "../LoginForm/LoginForm";
 import toast from "react-hot-toast";
 import { swrKeys } from "@/fetchers/swrKeys";
-import { authLocalStorage } from "@/utils/authLocalStorage";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
-import { IUser } from "@/typings/user";
-import { IErrorResponse } from "@/typings/errors";
-import { loginFetcher } from "@/fetchers/loginFetcher";
+import { mutator } from "@/fetchers/mutator";
 import { LogoImage } from "@/components/core/LogoImage/LogoImage";
 
 export const LoginCard = () => {
   const formId = useId();
 
-  const { trigger, isMutating } = useSWRMutation(
-    swrKeys.usersSignIn,
-    loginFetcher
-  );
+  const { trigger, isMutating } = useSWRMutation(swrKeys.usersSignIn, mutator, {
+    onSuccess(data, key, config) {
+      mutate(swrKeys.usersMe, data, {
+        revalidate: false,
+      });
+      toast.success("Successfully logged in!");
+    },
+    onError(err, key, config) {
+      err.errors?.map((errorMessage: string) => toast.error(errorMessage));
+    },
+    throwOnError: false,
+  });
 
   return (
     <Card bg="purple2" p={8}>
@@ -44,25 +49,8 @@ export const LoginCard = () => {
           </HStack>
           <LoginForm
             formId={formId}
-            onSubmit={async ({ email, password }) => {
-              try {
-                const result = await trigger({
-                  email,
-                  password,
-                });
-
-                authLocalStorage.setAuthData(result.authData);
-                mutate<IUser>(swrKeys.usersMe, result.user);
-
-                toast.success("Successfully logged in!");
-              } catch (e) {
-                if ((e as IErrorResponse).errors) {
-                  const errorResponse = e as IErrorResponse;
-                  errorResponse.errors.map((errorMessage) =>
-                    toast.error(errorMessage)
-                  );
-                }
-              }
+            onSubmit={async (data) => {
+              trigger(data);
             }}
           />
           <Button

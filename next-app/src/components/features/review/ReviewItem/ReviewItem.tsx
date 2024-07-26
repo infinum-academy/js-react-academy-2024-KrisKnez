@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IReview } from "@/typings/review";
+import { IReview, IReviewsResponse } from "@/typings/review";
 import {
   Button,
   Card,
@@ -10,31 +10,40 @@ import {
   Text,
 } from "@chakra-ui/react";
 import RatingInput from "@/components/shared/RatingInput/RatingInput";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 import { swrKeys } from "@/fetchers/swrKeys";
-import { fetcher } from "@/fetchers/fetcher";
-import { IUser } from "@/typings/user";
 import useSWRMutation from "swr/mutation";
-import { mutator } from "@/fetchers/mutator";
+import { useUser } from "@/hooks/users";
+import { deleteReviewMutator } from "@/fetchers/deleteReviewMutator";
+import { IMeta } from "@/typings/pagination";
 
 interface IReviewItemProps {
   review: IReview;
 }
 
 export const ReviewItem = ({ review }: IReviewItemProps) => {
-  const { data: user } = useSWR(swrKeys.usersMe, fetcher<{ user: IUser }>);
+  const { data: user } = useUser();
   const userIsAuthor = review.user.id === user?.user.id;
 
-  const { trigger } = useSWRMutation(swrKeys.reviewById(review.id), mutator);
+  const { trigger } = useSWRMutation(
+    swrKeys.reviewById(review.id),
+    deleteReviewMutator
+  );
 
   const handleDelete = async () => {
-    await trigger({
-      method: "DELETE",
-      body: JSON.stringify({
-        id: review.id,
-      }),
-    });
-    mutate(swrKeys.showByIdReviews(review.show_id.toString()));
+    await trigger();
+    mutate(
+      swrKeys.showByIdReviews(review.show_id.toString()),
+      (res: IReviewsResponse = { reviews: [], meta: {} as IMeta }) => {
+        return {
+          ...res,
+          reviews: res.reviews.filter((r) => r.id !== review.id),
+        };
+      },
+      {
+        revalidate: false,
+      }
+    );
   };
 
   return (

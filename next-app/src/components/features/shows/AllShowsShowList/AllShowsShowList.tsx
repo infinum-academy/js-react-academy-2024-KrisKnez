@@ -12,10 +12,7 @@ export const AllShowsShowList = () => {
     IShowsResponse,
     IErrorResponse,
     string
-  >(
-    swrKeys.shows,
-    (url) => fetcher(url)
-  );
+  >(swrKeys.shows, fetcher);
 
   if (error) {
     return <div>Error: {error.errors}</div>;

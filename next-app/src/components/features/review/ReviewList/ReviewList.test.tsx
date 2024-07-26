@@ -38,8 +38,9 @@ describe("ShowList component", () => {
   it("should render ShowCard components for each show", () => {
     render(<ReviewList reviews={mockReviews} />);
 
-    mockReviews.forEach((review) => {
-      expect(ReviewItem).toHaveBeenCalledWith(
+    mockReviews.forEach((review, index) => {
+      expect(ReviewItem).toHaveBeenNthCalledWith(
+        index + 1,
         expect.objectContaining<ComponentProps<typeof ReviewItem>>({
           review,
         }),

@@ -9,7 +9,8 @@ import { swrKeys } from "@/fetchers/swrKeys";
 import { fetcher } from "@/fetchers/fetcher";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
-import { mutator } from "@/fetchers/mutator";
+import { createReviewMutator } from "@/fetchers/createReviewMutator";
+import { IMeta } from "@/typings/pagination";
 
 interface ShowReviewSectionProps {
   showId: string;
@@ -20,7 +21,23 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
 }) => {
   const { trigger, isMutating } = useSWRMutation(
     swrKeys.reviews,
-    mutator
+    createReviewMutator,
+    {
+      onSuccess(data, key, config) {
+        mutate(
+          swrKeys.showByIdReviews(showId),
+          async (
+            res: IReviewsResponse = { reviews: [], meta: {} as IMeta }
+          ) => ({
+            ...res,
+            reviews: [data.review, ...res.reviews],
+          }),
+          {
+            revalidate: false,
+          }
+        );
+      },
+    }
   );
 
   const { data, isLoading, error } = useSWR<
@@ -44,23 +61,13 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
           isDisabled={isMutating}
           onSubmit={async (form, data) => {
             try {
-              await trigger({
-                body: JSON.stringify({
-                  ...data,
-                  rating: data.rating.toString(),
-                  show_id: parseInt(showId),
-                }),
-              });
-              mutate(swrKeys.showByIdReviews(showId));
+              await trigger({ ...data, show_id: showId });
               toast.success("Review added successfully");
               form.reset();
-            } catch (e) {
-              if (e as IErrorResponse) {
-                const errorResponse = e as IErrorResponse;
-                errorResponse.errors.map((errorMessage) =>
-                  toast.error(errorMessage)
-                );
-              }
+            } catch (err: any) {
+              err.errors?.map((errorMessage: string) =>
+                toast.error(errorMessage)
+              );
             }
           }}
         />

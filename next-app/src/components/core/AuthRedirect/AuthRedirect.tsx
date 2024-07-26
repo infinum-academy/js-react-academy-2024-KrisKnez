@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { swrKeys } from "@/fetchers/swrKeys";
 import { fetcher } from "@/fetchers/fetcher";
 import { Spinner, VStack } from "@chakra-ui/react";
+import { useUser } from "@/hooks/users";
 
 interface AuthRedirectProps {
   to: string;
@@ -20,7 +21,7 @@ export const AuthRedirect = ({
   children,
 }: AuthRedirectProps) => {
   const router = useRouter();
-  const { isLoading, data } = useSWR(swrKeys.usersMe, fetcher, {});
+  const { isLoading, data } = useUser();
   const [showSpinner, setShowSpinner] = useState(true);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export const AuthRedirect = ({
     } else {
       setShowSpinner(false);
     }
-  }, [isLoading, data, condition, router]);
+  }, [isLoading, data, condition, router, to]);
 
   if (showSpinner)
     return (
