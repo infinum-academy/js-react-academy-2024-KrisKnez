@@ -4,17 +4,25 @@ import "@testing-library/jest-dom";
 import { render, screen, act, waitFor } from "@testing-library/react";
 import { ReviewItem } from "./ReviewItem";
 import { IReview } from "@/typings/review";
-import { mutator } from "@/fetchers/mutator";
 import { mutate } from "swr";
+import { deleteReviewMutator } from "@/fetchers/deleteReviewMutator";
 
-jest.mock("@/fetchers/mutator", () => ({
-  mutator: jest.fn(),
+jest.mock("@/fetchers/deleteReviewMutator", () => ({
+  deleteReviewMutator: jest.fn(),
+}));
+
+jest.mock("@/fetchers/fetcher", () => ({
+  // Return user
+  fetcher: jest.fn(() => ({ user: { id: "1" } })),
 }));
 
 jest.mock("swr", () => {
+  const originalSWR = jest.requireActual("swr");
+
   return {
+    ...originalSWR,
     __esModule: true,
-    default: jest.fn(() => ({ data: { user: { id: "1" } } })),
+    // default: jest.fn(() => ({ data: { user: { id: "1" } } })),
     mutate: jest.fn(),
   };
 });
@@ -53,7 +61,7 @@ describe("ReviewItem component", () => {
     });
 
     await waitFor(() => {
-      expect(mutator).toHaveBeenCalled();
+      expect(deleteReviewMutator).toHaveBeenCalled();
       expect(mutate).toHaveBeenCalled();
     });
   });

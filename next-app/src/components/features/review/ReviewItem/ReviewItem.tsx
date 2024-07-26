@@ -10,20 +10,18 @@ import {
   Text,
 } from "@chakra-ui/react";
 import RatingInput from "@/components/shared/RatingInput/RatingInput";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 import { swrKeys } from "@/fetchers/swrKeys";
-import { fetcher } from "@/fetchers/fetcher";
-import { IUser } from "@/typings/user";
 import useSWRMutation from "swr/mutation";
-import { mutator } from "@/fetchers/mutator";
-import { deleteReviewMutator } from "@/typings/deleteReviewMutator";
+import { useUser } from "@/hooks/users";
+import { deleteReviewMutator } from "@/fetchers/deleteReviewMutator";
 
 interface IReviewItemProps {
   review: IReview;
 }
 
 export const ReviewItem = ({ review }: IReviewItemProps) => {
-  const { data: user } = useSWR(swrKeys.usersMe, fetcher<{ user: IUser }>);
+  const { data: user } = useUser();
   const userIsAuthor = review.user.id === user?.user.id;
 
   const { trigger } = useSWRMutation(
