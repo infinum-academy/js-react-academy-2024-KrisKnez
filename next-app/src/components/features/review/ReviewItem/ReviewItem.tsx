@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IReview } from "@/typings/review";
+import { IReview, IReviewsResponse } from "@/typings/review";
 import {
   Button,
   Card,
@@ -15,6 +15,7 @@ import { swrKeys } from "@/fetchers/swrKeys";
 import useSWRMutation from "swr/mutation";
 import { useUser } from "@/hooks/users";
 import { deleteReviewMutator } from "@/fetchers/deleteReviewMutator";
+import { IMeta } from "@/typings/pagination";
 
 interface IReviewItemProps {
   review: IReview;
@@ -31,7 +32,18 @@ export const ReviewItem = ({ review }: IReviewItemProps) => {
 
   const handleDelete = async () => {
     await trigger();
-    mutate(swrKeys.showByIdReviews(review.show_id.toString()));
+    mutate(
+      swrKeys.showByIdReviews(review.show_id.toString()),
+      (res: IReviewsResponse = { reviews: [], meta: {} as IMeta }) => {
+        return {
+          ...res,
+          reviews: res.reviews.filter((r) => r.id !== review.id),
+        };
+      },
+      {
+        revalidate: false,
+      }
+    );
   };
 
   return (
