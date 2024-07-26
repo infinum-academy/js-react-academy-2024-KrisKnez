@@ -26,22 +26,22 @@ const fonts = {
   note: "Roboto, sans-serif",
 };
 const fontSizes = {
-  headline: "40pt",
-  title: "24pt",
-  body: "20pt",
-  subtitle: "18pt",
-  smallCaption: "16pt",
-  buttonOrCaption: "14pt",
-  note: "12pt",
+  headline: "40px",
+  title: "24px",
+  body: "20ptx",
+  subtitle: "18px",
+  smallCaption: "16px",
+  buttonOrCaption: "14px",
+  note: "12px",
 };
 const fontLineHeights = {
-  headline: "52pt",
-  title: "32pt",
-  body: "30pt",
-  subtitle: "24pt",
-  smallCaption: "22pt",
-  buttonOrCaption: "20pt",
-  note: "18pt",
+  headline: "52px",
+  title: "32px",
+  body: "30px",
+  subtitle: "24px",
+  smallCaption: "22px",
+  buttonOrCaption: "20px",
+  note: "18px",
 };
 const fontWeight = {
   regular: 400,
