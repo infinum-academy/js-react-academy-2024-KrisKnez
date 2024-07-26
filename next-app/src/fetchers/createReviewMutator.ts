@@ -4,4 +4,4 @@ import { mutator } from "./mutator";
 export const createReviewMutator = (
   url: string,
   { arg }: { arg: ICreateReviewRequest }
-) => mutator<IReview, ICreateReviewRequest>(url, { arg });
+) => mutator<{ review: IReview }, ICreateReviewRequest>(url, { arg });

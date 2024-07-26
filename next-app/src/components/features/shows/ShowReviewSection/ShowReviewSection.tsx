@@ -10,6 +10,7 @@ import { fetcher } from "@/fetchers/fetcher";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
 import { createReviewMutator } from "@/fetchers/createReviewMutator";
+import { IMeta } from "@/typings/pagination";
 
 interface ShowReviewSectionProps {
   showId: string;
@@ -18,7 +19,26 @@ interface ShowReviewSectionProps {
 export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
   showId,
 }) => {
-  const { trigger, isMutating } = useSWRMutation(swrKeys.reviews, createReviewMutator);
+  const { trigger, isMutating } = useSWRMutation(
+    swrKeys.reviews,
+    createReviewMutator,
+    {
+      onSuccess(data, key, config) {
+        mutate(
+          swrKeys.showByIdReviews(showId),
+          async (
+            res: IReviewsResponse = { reviews: [], meta: {} as IMeta }
+          ) => ({
+            ...res,
+            reviews: [data.review, ...res.reviews],
+          }),
+          {
+            revalidate: false,
+          }
+        );
+      },
+    }
+  );
 
   const { data, isLoading, error } = useSWR<
     IReviewsResponse,
@@ -39,7 +59,6 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
           onSubmit={async (form, data) => {
             try {
               await trigger({ ...data, show_id: showId });
-              mutate(swrKeys.showByIdReviews(showId));
               toast.success("Review added successfully");
               form.reset();
             } catch (err: any) {
