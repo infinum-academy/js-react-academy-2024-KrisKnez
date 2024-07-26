@@ -1,4 +1,5 @@
-import { Button, Link, VStack } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/next-js";
+import { Button, VStack } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import React from "react";
 
