@@ -12,7 +12,7 @@ interface EmailFieldProps {
 export const EmailField = ({error, register}: EmailFieldProps) => {
   return (
     <FormControl isInvalid={Boolean(error)}>
-      <InputGroup color="white" size="lg">
+      <InputGroup variant="dark">
         <InputLeftElement pointerEvents="none">
           <Icon as={MdPerson} boxSize={6} />
         </InputLeftElement>
