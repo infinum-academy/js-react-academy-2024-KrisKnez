@@ -1,5 +1,5 @@
 import { AuthRedirect } from "@/components/core/AuthRedirect/AuthRedirect";
-import { SidebarNavigation } from "@/components/core/SidebarNavigation/SidebarNavigation";
+import { Sidebar } from "@/components/shared/Sidebar/Sidebar";
 import { Box, Container, HStack, Stack } from "@chakra-ui/react";
 import React from "react";
 
@@ -19,7 +19,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         alignItems="stretch"
         height="100%"
       >
-        <SidebarNavigation />
+        <Sidebar />
         <Box flexGrow={1} overflowY="auto">
           <Container maxW="container.xl" padding={8}>
             {children}

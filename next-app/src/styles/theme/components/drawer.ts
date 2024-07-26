@@ -6,7 +6,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 const purple = definePartsStyle({
   dialog: {
-    borderRadius: 'md',
+    borderTopLeftRadius: `3xl`,
     bg: `purple2`,
   },
 })
