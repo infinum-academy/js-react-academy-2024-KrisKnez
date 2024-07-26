@@ -18,7 +18,7 @@ import React from "react";
 import { LogoutButton } from "./LogoutButton";
 
 export const SidebarNavigationMobile = () => {
-  const { isOpen, onClose, onToggle, onOpen } = useDisclosure();
+  const { isOpen, onClose, onToggle } = useDisclosure();
 
   return (
     <Box hideFrom="md">
@@ -44,7 +44,7 @@ export const SidebarNavigationMobile = () => {
           <DrawerCloseButton />
 
           <DrawerBody marginTop="80px">
-            <NavigationMenu />
+            <NavigationMenu onSelect={onClose} />
           </DrawerBody>
 
           <DrawerFooter justifyContent="flex-start" marginBottom="50px">

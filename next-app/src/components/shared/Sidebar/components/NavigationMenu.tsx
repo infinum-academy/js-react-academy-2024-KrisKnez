@@ -23,20 +23,21 @@ const SIDEBAR_ITEMS: Array<ISidebarItem> = [
   },
 ];
 
-export const NavigationMenu = () => {
+interface NavigationMenuProps {
+  onSelect: () => void;
+}
+
+export const NavigationMenu = ({ onSelect }: NavigationMenuProps) => {
   const pathname = usePathname();
 
   return (
-    <VStack
-      spacing={1}
-      alignItems="stretch"
-    >
+    <VStack spacing={1} alignItems="stretch">
       {SIDEBAR_ITEMS.map(({ label, href }) => {
         const isActive = pathname === href;
 
         return (
           <Link key={href} href={href}>
-            <Button variant={"dark"} isActive={isActive}>
+            <Button variant={"dark"} isActive={isActive} onClick={onSelect}>
               {label}
             </Button>
           </Link>
