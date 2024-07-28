@@ -4,60 +4,65 @@ import RatingInput from "@/components/shared/RatingInput/RatingInput";
 import {
   Box,
   Button,
-  Heading,
+  FormControl,
+  FormErrorMessage,
   HStack,
-  Stack,
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
+import { useForm, UseFormReturn } from "react-hook-form";
 
-interface ReviewFormProps {
-  addShowReview: (comment: string, rating: number) => void;
+interface ReviewFormFields {
+  comment: string;
+  rating: number;
 }
 
-const ReviewForm: React.FC<ReviewFormProps> = ({ addShowReview }) => {
-  const [rating, setRating] = useState(5);
+interface ReviewFormProps {
+  onSubmit: (
+    form: UseFormReturn<ReviewFormFields, any, undefined>,
+    data: ReviewFormFields
+  ) => void;
+}
+
+const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit }) => {
+  const form = useForm<ReviewFormFields>({
+    defaultValues: {
+      comment: "",
+      rating: 5,
+    },
+  });
+  const { handleSubmit, watch, setValue, register, formState } = form;
+
+  const rating = watch("rating");
 
   return (
     <VStack
       as="form"
       alignItems="stretch"
       spacing={6}
-      onSubmit={(event) => {
-        event.preventDefault();
-
-        const form = event.target as HTMLFormElement;
-
-        // Get form values
-        const formData = new FormData(form);
-        const comment = formData.get("comment") as string;
-
-        addShowReview(comment, rating);
-
-        // Reset form
-        setRating(5);
-        form.reset();
-      }}
+      onSubmit={handleSubmit((data) => onSubmit(form, data))}
     >
-      <Textarea
-        name="comment"
-        required
-        placeholder="Add review"
-        maxH={200}
-        bg="white"
-        color="black"
-        borderRadius={24}
-        padding={4}
-      />
+      <FormControl isInvalid={Boolean(formState.errors.comment)}>
+        <Textarea
+          placeholder="Add review"
+          maxH={200}
+          bg="white"
+          color="black"
+          borderRadius={24}
+          padding={4}
+          {...register("comment", {
+            required: "This field is required",
+          })}
+        />
+        <FormErrorMessage>{formState.errors.comment?.message}</FormErrorMessage>
+      </FormControl>
       <HStack alignItems="flex-start" justifyContent="space-between">
         <Box p={2}>
           <RatingInput
             label={`${rating} / 5`}
             value={rating}
-            onChange={(rating) => {
-              setRating(rating);
-            }}
+            onChange={(rating) => setValue("rating", rating)}
           />
         </Box>
         <Button type="submit" colorScheme="gray" fontSize="sm" minW={130}>

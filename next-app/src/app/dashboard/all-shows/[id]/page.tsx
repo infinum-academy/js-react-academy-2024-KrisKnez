@@ -2,8 +2,7 @@
 
 import { ShowDetailsContainer } from "@/components/features/shows/ShowDetailsContainer/ShowDetailsContainer";
 import { ShowReviewSection } from "@/components/features/shows/ShowReviewSection/ShowReviewSection";
-import { Box, Heading, HStack, VStack } from "@chakra-ui/react";
-import Head from "next/head";
+import { Heading, VStack } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import React from "react";
 

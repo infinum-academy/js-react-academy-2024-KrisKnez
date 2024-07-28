@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
 import { Box } from "@chakra-ui/react";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <Box as="html" lang="en" height="100%">
       <Box as="body" height="100%">
+        <Toaster position="bottom-center" reverseOrder={false} />
         <Providers>{children}</Providers>
       </Box>
     </Box>

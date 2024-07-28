@@ -1,4 +1,12 @@
-import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+import { inputAnatomy } from "@chakra-ui/anatomy";
+import {
+  createMultiStyleConfigHelpers,
+  extendTheme,
+  ThemeConfig,
+} from "@chakra-ui/react";
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(inputAnatomy.keys);
 
 export const theme = extendTheme({
   config: {
@@ -31,8 +39,17 @@ export const theme = extendTheme({
     },
     Button: {
       baseStyle: {
-        borderRadius: "999px", // Button border radius
+        borderRadius: "full", // Button border radius
       },
     },
+    Input: defineMultiStyleConfig({
+      baseStyle: {
+        field: {
+          borderRadius: "full", // Input border radius
+          borderWidth: 2, // Input border width
+          color: "white", // Input text color
+        },
+      },
+    }),
   },
 }) as ThemeConfig;

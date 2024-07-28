@@ -1,7 +1,21 @@
+import { IMeta } from "./pagination";
+import { IUser } from "./user";
+
 export interface IReview {
-  email: string;
-  avatar: string;
-  rating: number;
+  id: string;
   comment: string;
-  showId: string;
+  rating: number;
+  show_id: number;
+  user: IUser;
+}
+
+export interface IReviewsResponse {
+  reviews: IReview[];
+  meta: IMeta;
+}
+
+export interface ICreateReviewRequest {
+  comment: string
+  rating: number
+  show_id: string;
 }

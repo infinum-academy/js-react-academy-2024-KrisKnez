@@ -1,9 +1,12 @@
 "use client";
 
+import { swrKeys } from "@/fetchers/swrKeys";
+import { authLocalStorage } from "@/utils/authLocalStorage";
 import { Button, Heading, VStack } from "@chakra-ui/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { mutate, useSWRConfig } from "swr";
 
 interface ISidebarItem {
   label: string;
@@ -13,15 +16,15 @@ interface ISidebarItem {
 const SIDEBAR_ITEMS = [
   {
     label: "All shows",
-    href: "/all-shows",
+    href: "/dashboard/all-shows",
   },
   {
     label: "Top rated",
-    href: "/top-rated",
+    href: "/dashboard/top-rated",
   },
   {
     label: "Profile",
-    href: "/profile",
+    href: "/dashboard/profile",
   },
 ];
 
@@ -63,6 +66,12 @@ export const SidebarNavigation = () => {
         colorScheme="white"
         _hover={{
           bg: "brand.800",
+        }}
+        onClick={() => {
+          authLocalStorage.setAuthData(null);
+          mutate(swrKeys.usersMe, null, {
+            revalidate: false,
+          });
         }}
       >
         Log out
