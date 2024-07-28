@@ -53,7 +53,7 @@ export const LoginCard = () => {
           <LoginForm
             formId={formId}
             onSubmit={async (data) => {
-              trigger(data, {});
+              trigger(data);
             }}
           />
           <Button

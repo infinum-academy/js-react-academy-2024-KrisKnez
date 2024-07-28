@@ -3,13 +3,14 @@ import ReviewForm from "../../review/ReviewForm/ReviewForm";
 import ReviewList from "../../review/ReviewList/ReviewList";
 import { IReviewsResponse } from "@/typings/review";
 import { Heading, HStack, VStack } from "@chakra-ui/react";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { IErrorResponse } from "@/typings/errors";
 import { swrKeys } from "@/fetchers/swrKeys";
 import { fetcher } from "@/fetchers/fetcher";
 import useSWRMutation from "swr/mutation";
 import toast from "react-hot-toast";
 import { createReviewMutator } from "@/fetchers/createReviewMutator";
+import { IMeta } from "@/typings/pagination";
 
 interface ShowReviewSectionProps {
   showId: string;
@@ -18,7 +19,26 @@ interface ShowReviewSectionProps {
 export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
   showId,
 }) => {
-  const { trigger } = useSWRMutation(swrKeys.reviews, createReviewMutator);
+  const { trigger, isMutating } = useSWRMutation(
+    swrKeys.reviews,
+    createReviewMutator,
+    {
+      onSuccess(data, key, config) {
+        mutate(
+          swrKeys.showByIdReviews(showId),
+          async (
+            res: IReviewsResponse = { reviews: [], meta: {} as IMeta }
+          ) => ({
+            ...res,
+            reviews: [data.review, ...res.reviews],
+          }),
+          {
+            revalidate: false,
+          }
+        );
+      },
+    }
+  );
 
   const { data, isLoading, error } = useSWR<
     IReviewsResponse,
@@ -35,6 +55,7 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
       <Heading size="lg">Reviews</Heading>
       <VStack flexGrow={1} alignItems="stretch" spacing={16}>
         <ReviewForm
+          isDisabled={isMutating}
           onSubmit={async (form, data) => {
             try {
               await trigger({ ...data, show_id: showId });

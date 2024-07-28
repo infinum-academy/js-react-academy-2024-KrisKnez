@@ -35,5 +35,9 @@ export const fetcher = async <JSON = any>(
     throw await res.json();
   }
 
-  return res.json();
+  const contentType = res.headers.get("Content-Type");
+  if (contentType && contentType.includes("application/json"))
+    return res.json();
+
+  return {} as JSON;
 };

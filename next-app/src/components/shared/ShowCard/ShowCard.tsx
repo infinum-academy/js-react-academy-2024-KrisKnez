@@ -16,6 +16,7 @@ const ShowCard = ({ show }: IShowCardProps) => {
       <Box position="relative" width="100%" flexGrow={1}>
         <Image
           src={show.image_url || "https://fakeimg.pl/600x400"}
+          sizes="(max-width: 768px) 25vw"
           // src={"https://fakeimg.pl/600x400"}
           alt={show.title}
           fill
