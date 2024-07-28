@@ -66,13 +66,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit, isDisabled }) => {
             onChange={(rating) => setValue("rating", rating)}
           />
         </Box>
-        <Button
-          type="submit"
-          colorScheme="gray"
-          fontSize="sm"
-          minW={130}
-          isDisabled={isDisabled}
-        >
+        <Button type="submit" variant="light" isDisabled={isDisabled}>
           Post
         </Button>
       </HStack>

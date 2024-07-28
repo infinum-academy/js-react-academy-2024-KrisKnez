@@ -12,15 +12,15 @@ interface PasswordConfirmationFieldProps {
 export const PasswordConfirmationField = ({error, register}: PasswordConfirmationFieldProps) => {
   return (
     <FormControl isInvalid={Boolean(error)}>
-      <InputGroup color="white" size="lg">
+      <InputGroup variant="dark">
         <InputLeftElement pointerEvents="none">
           <Icon as={MdPerson} boxSize={6} />
         </InputLeftElement>
         <Input
-          type="email"
-          placeholder="Email"
-          {...register("email", {
-            required: "Email is required",
+          type="password"
+          placeholder="Repeat Password"
+          {...register("passwordConfirmation", {
+            required: "Password confirmation is required",
           })}
         />
       </InputGroup>

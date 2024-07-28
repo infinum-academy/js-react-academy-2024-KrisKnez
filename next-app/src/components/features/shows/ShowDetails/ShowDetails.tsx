@@ -2,9 +2,9 @@
 
 import React from "react";
 import { Box, Card, CardBody, Heading, Text } from "@chakra-ui/react";
+import Image from "next/image";
 
 import { IShow } from "@/typings/show";
-import { Image } from "@chakra-ui/next-js";
 
 interface ShowDetailsProps {
   show: IShow;
@@ -16,10 +16,9 @@ export const ShowDetails = ({ show }: ShowDetailsProps) => {
       <Box position="relative" width="100%" height="400px">
         <Image
           src={show.image_url || "https://fakeimg.pl/600x400"}
-          // src={"https://fakeimg.pl/600x400"}
           alt={show.title}
           fill
-          sx={{ objectFit: "cover" }}
+          style={{ objectFit: "cover" }}
         />
       </Box>
       <CardBody>

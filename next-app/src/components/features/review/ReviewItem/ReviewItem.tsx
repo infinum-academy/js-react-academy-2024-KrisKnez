@@ -47,7 +47,7 @@ export const ReviewItem = ({ review }: IReviewItemProps) => {
   };
 
   return (
-    <Card bg="brand.800" color="white">
+    <Card variant="dark">
       <CardBody>
         <Stack spacing={4} alignItems="flex-start" marginTop={2}>
           <Text>{review.comment}</Text>

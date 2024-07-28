@@ -12,7 +12,7 @@ interface PasswordFieldProps {
 export const PasswordField = ({error, register}: PasswordFieldProps) => {
   return (
     <FormControl isInvalid={Boolean(error)}>
-      <InputGroup color="white" size="lg">
+      <InputGroup variant="dark">
         <InputLeftElement pointerEvents="none">
           <Icon as={MdLock} boxSize={6} />
         </InputLeftElement>

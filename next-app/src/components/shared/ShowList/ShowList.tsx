@@ -10,7 +10,15 @@ interface ShowListProps {
 
 const ShowList = ({ shows }: ShowListProps) => {
   return (
-    <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+    <Grid
+      templateColumns={{
+        base: "repeat(1, 1fr)",
+        md: "repeat(2, 1fr)",
+        lg: "repeat(3, 1fr)",
+        xl: "repeat(4, 1fr)",
+      }}
+      gap={6}
+    >
       {shows.map((show) => (
         <Link key={show.id} href={`/dashboard/all-shows/${show.id}`}>
           <GridItem key={show.title} height="400px" display="flex">

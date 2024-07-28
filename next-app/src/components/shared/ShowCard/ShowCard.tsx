@@ -12,7 +12,7 @@ interface IShowCardProps {
 
 const ShowCard = ({ show }: IShowCardProps) => {
   return (
-    <Card overflow="hidden" flexGrow={1}>
+    <Card overflow="hidden" flexGrow={1} variant="light">
       <Box position="relative" width="100%" flexGrow={1}>
         <Image
           src={show.image_url || "https://fakeimg.pl/600x400"}

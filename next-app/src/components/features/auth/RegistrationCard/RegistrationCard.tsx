@@ -18,27 +18,20 @@ import { swrKeys } from "@/fetchers/swrKeys";
 import { mutator } from "@/fetchers/mutator";
 import toast from "react-hot-toast";
 import { IErrorResponse } from "@/typings/errors";
+import { LogoImage } from "@/components/core/LogoImage/LogoImage";
 
 export const RegistrationCard = () => {
   const formId = useId();
 
-  const { trigger, isMutating } = useSWRMutation(
-    swrKeys.users,
-    mutator
-  );
+  const { trigger, isMutating } = useSWRMutation(swrKeys.users, mutator);
 
   return (
-    <Card bg="brand.800" p={8}>
-      <CardHeader>
-        {/* Logo */}
-        <HStack justifyContent="center">
-          <Heading size="md" color="white">
-            TV SHOW APP
-          </Heading>
-        </HStack>
-      </CardHeader>
+    <Card bg="purple2" p={8}>
       <CardBody>
-        <VStack spacing={8} alignItems="stretch">
+        <VStack spacing={0}>
+          <HStack justifyContent="center" marginBottom="50px">
+            <LogoImage width={200} />
+          </HStack>
           <RegistrationForm
             formId={formId}
             onSubmit={async (data) => {
@@ -59,14 +52,13 @@ export const RegistrationCard = () => {
           <Button
             type="submit"
             form={formId}
-            size="lg"
-            fontSize="small"
-            color="brand.800"
             isDisabled={isMutating}
+            variant="light"
+            marginTop="58px"
           >
             SIGN UP
           </Button>
-          <Text color="white" fontSize="sm" textAlign="center">
+          <Text color="white" fontSize="sm" textAlign="center" marginTop="28px">
             Already have an account?{" "}
             <Link href="/auth/login" fontWeight={600}>
               Login
