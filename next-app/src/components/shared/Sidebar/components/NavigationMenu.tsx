@@ -1,5 +1,6 @@
+import { ShowPicker } from "@/components/features/shows/ShowPicker/ShowPicker";
 import { Link } from "@chakra-ui/next-js";
-import { Button, VStack } from "@chakra-ui/react";
+import { Box, Button, VStack } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -43,6 +44,9 @@ export const NavigationMenu = ({ onSelect }: NavigationMenuProps) => {
           </Link>
         );
       })}
+      <Box>
+        <ShowPicker />
+      </Box>
     </VStack>
   );
 };

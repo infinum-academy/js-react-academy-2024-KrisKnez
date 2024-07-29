@@ -1,30 +1,51 @@
-import React from "react";
+import React, { ComponentProps } from "react";
 
-import { Box, Card, CardBody, HStack, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  CardBody,
+  CardProps,
+  HStack,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
 import { Image } from "@chakra-ui/next-js";
 
 import { IShow } from "@/typings/show";
 import { StarIcon } from "@chakra-ui/icons";
 
-interface IShowCardProps {
+interface IShowCardProps extends CardProps {
   show: IShow;
 }
 
-const ShowCard = ({ show }: IShowCardProps) => {
+const ShowCard = ({ show, ...restProps }: IShowCardProps) => {
   return (
-    <Card overflow="hidden" flexGrow={1} variant="light">
+    <Card
+      overflow="hidden"
+      flexGrow={1}
+      variant="light"
+      minWidth={0}
+      {...restProps}
+    >
       <Box position="relative" width="100%" flexGrow={1}>
         <Image
           src={show.image_url || "https://fakeimg.pl/600x400"}
-          sizes="(max-width: 768px) 25vw"
           // src={"https://fakeimg.pl/600x400"}
+          sizes="(max-width: 768px) 25vw"
           alt={show.title}
           fill
           sx={{ objectFit: "cover" }}
         />
       </Box>
       <CardBody color="brand.800" flexGrow={0}>
-        <Heading size="md">{show.title}</Heading>
+        <Heading
+          size="md"
+          whiteSpace="nowrap"
+          overflow="hidden"
+          textOverflow="ellipsis"
+        >
+          {show.title}
+        </Heading>
         <HStack>
           <StarIcon />
           <Text>

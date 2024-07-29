@@ -2,7 +2,7 @@ import React from "react";
 import ReviewForm from "../../review/ReviewForm/ReviewForm";
 import ReviewList from "../../review/ReviewList/ReviewList";
 import { IReviewsResponse } from "@/typings/review";
-import { Heading, HStack, Stack, VStack } from "@chakra-ui/react";
+import { Heading, Stack, VStack } from "@chakra-ui/react";
 import useSWR, { mutate } from "swr";
 import { IErrorResponse } from "@/typings/errors";
 import { swrKeys } from "@/fetchers/swrKeys";
@@ -54,7 +54,10 @@ export const ShowReviewSection: React.FC<ShowReviewSectionProps> = ({
     <Stack direction={{
       base: "column",
       md: "row",
-    }} alignItems="stretch" spacing={24}>
+    }} alignItems="stretch" spacing={{
+      base: 4,
+      md: 24,
+    }}>
       <Heading size="lg">Reviews</Heading>
       <VStack flexGrow={1} alignItems="stretch" spacing={16}>
         <ReviewForm
