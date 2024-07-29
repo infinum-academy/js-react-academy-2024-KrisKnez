@@ -72,11 +72,9 @@ export const ShowPicker = () => {
       </Button>
 
       <Modal
+        onCloseComplete={reset}
         isOpen={isOpen}
-        onClose={() => {
-          onClose();
-          reset();
-        }}
+        onClose={() => onClose()}
         isCentered
         size={{
           base: "full",
@@ -128,13 +126,7 @@ export const ShowPicker = () => {
                   Previous
                 </Button>
                 {isLastStep ? (
-                  <Button
-                    variant="light"
-                    onClick={() => {
-                      onClose();
-                      reset();
-                    }}
-                  >
+                  <Button variant="light" onClick={() => onClose()}>
                     Close
                   </Button>
                 ) : (
