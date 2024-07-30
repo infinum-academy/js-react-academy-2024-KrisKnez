@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <AuthRedirect to="/auth" condition="isLoggedIn">
+    <AuthRedirect to="/auth/login" condition="isLoggedIn">
       <Stack
         direction={{
           base: "column",

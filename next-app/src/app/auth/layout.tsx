@@ -8,7 +8,7 @@ interface AuthLayoutProps {
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
-    <AuthRedirect to="/dashboard" condition="isNotLoggedIn">
+    <AuthRedirect to="/dashboard/all-shows" condition="isNotLoggedIn">
       <Stack height="100%" alignItems="center" justifyContent="center">
         {children}
       </Stack>
