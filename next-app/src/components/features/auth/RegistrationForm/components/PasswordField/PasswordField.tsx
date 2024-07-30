@@ -17,13 +17,11 @@ export const PasswordField = ({ error, register }: PasswordFieldProps) => {
   return (
     <FormControl isInvalid={Boolean(error)}>
       <PasswordInputGroup
-        inputProps={{
-          ...register("password", {
-            required: "Password is required",
-            validate: (value) =>
-              value.length >= 8 || "Password must be at least 8 characters",
-          }),
-        }}
+        {...register("password", {
+          required: "Password is required",
+          validate: (value) =>
+            value.length >= 8 || "Password must be at least 8 characters",
+        })}
       />
       <FormErrorMessage>{error}</FormErrorMessage>
       {!error && (

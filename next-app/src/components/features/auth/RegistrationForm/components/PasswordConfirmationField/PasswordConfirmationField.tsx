@@ -1,7 +1,4 @@
-import {
-  FormControl,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
 import { RegistrationFormFields } from "../../RegistrationForm";
@@ -19,12 +16,10 @@ export const PasswordConfirmationField = ({
   return (
     <FormControl isInvalid={Boolean(error)}>
       <PasswordInputGroup
-        inputProps={{
-          ...register("passwordConfirmation", {
-            required: "Password confirmation is required",
-          }),
-          placeholder: "Repeat Password",
-        }}
+        {...register("passwordConfirmation", {
+          required: "Password confirmation is required",
+        })}
+        placeholder="Repeat Password"
       />
       <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>

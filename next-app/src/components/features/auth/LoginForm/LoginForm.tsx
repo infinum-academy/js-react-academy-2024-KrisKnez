@@ -49,11 +49,9 @@ export const LoginForm = ({ formId, onSubmit }: LoginFormProps) => {
   const passwordField = (
     <FormControl isInvalid={Boolean(formState.errors.password)}>
       <PasswordInputGroup
-        inputProps={{
-          ...register("password", {
-            required: "Password is required",
-          }),
-        }}
+        {...register("password", {
+          required: "Password is required",
+        })}
       />
       <FormErrorMessage>{formState.errors.password?.message}</FormErrorMessage>
     </FormControl>
