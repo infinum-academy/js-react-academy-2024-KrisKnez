@@ -12,7 +12,7 @@ interface ShowDetailsProps {
 
 export const ShowDetails = ({ show }: ShowDetailsProps) => {
   return (
-    <Card overflow="hidden">
+    <Card overflow="hidden" variant="light">
       <Box position="relative" width="100%" height="400px">
         <Image
           src={show.image_url || "https://fakeimg.pl/600x400"}

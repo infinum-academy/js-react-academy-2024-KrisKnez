@@ -5,12 +5,21 @@ export const buttonTheme = defineStyleConfig({
     light: {
       borderRadius: "full",
       padding: "20px 50px",
-      fontFamily: "buttonOrCaption",
-      fontSize: "buttonOrCaption",
+      fontSize: "sm",
       background: "white",
       color: "purple2",
-      minWidth: "144px",
+      // minWidth: "144px",
       width: "fit-content",
+
+      _hover: {
+        background: "lightPurple",
+        color: "white",
+      },
+
+      _disabled: {
+        background: "lightPurple",
+        color: "white",
+      }
     },
     dark: {
       borderRadius: "full",

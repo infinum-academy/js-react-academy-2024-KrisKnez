@@ -16,13 +16,14 @@ const ShowList = ({ shows }: ShowListProps) => {
         md: "repeat(2, 1fr)",
         lg: "repeat(3, 1fr)",
         xl: "repeat(4, 1fr)",
+        "2xl": "repeat(5, 1fr)",
       }}
       gap={6}
     >
       {shows.map((show) => (
-        <Link key={show.id} href={`/dashboard/all-shows/${show.id}`}>
-          <GridItem key={show.title} height="400px" display="flex">
-            <ShowCard show={show} />
+        <Link key={show.id} href={`/dashboard/all-shows/${show.id}`} minW={0}>
+          <GridItem key={show.title} height="400px">
+            <ShowCard show={show} h="100%" />
           </GridItem>
         </Link>
       ))}

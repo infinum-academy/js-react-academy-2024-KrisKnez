@@ -4,9 +4,10 @@ import { AuthRedirect } from "@/components/core/AuthRedirect/AuthRedirect";
 
 const Home = () => {
   return (
-    <AuthRedirect to="/auth" condition="isLoggedIn">
-      <AuthRedirect to="/dashboard" condition="isNotLoggedIn"></AuthRedirect>
-    </AuthRedirect>
+    <>
+      <AuthRedirect to="/auth/login" condition="isLoggedIn" />
+      <AuthRedirect to="/dashboard/all-shows" condition="isNotLoggedIn" />
+    </>
   );
 };
 

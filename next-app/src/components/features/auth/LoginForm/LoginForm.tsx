@@ -1,7 +1,7 @@
 "use client";
 
+import { PasswordInputGroup } from "@/components/shared/PasswordInputGroup/PasswordInputGroup";
 import {
-  Button,
   chakra,
   FormControl,
   FormErrorMessage,
@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { MdLock, MdPerson } from "react-icons/md";
+import { MdPerson } from "react-icons/md";
 
 interface LoginFormFields {
   email: string;
@@ -48,18 +48,11 @@ export const LoginForm = ({ formId, onSubmit }: LoginFormProps) => {
 
   const passwordField = (
     <FormControl isInvalid={Boolean(formState.errors.password)}>
-      <InputGroup variant="dark">
-        <InputLeftElement pointerEvents="none">
-          <Icon as={MdLock} boxSize={6} />
-        </InputLeftElement>
-        <Input
-          type="password"
-          placeholder="Password"
-          {...register("password", {
-            required: "Password is required",
-          })}
-        />
-      </InputGroup>
+      <PasswordInputGroup
+        {...register("password", {
+          required: "Password is required",
+        })}
+      />
       <FormErrorMessage>{formState.errors.password?.message}</FormErrorMessage>
     </FormControl>
   );

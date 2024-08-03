@@ -40,13 +40,13 @@ export const RegistrationForm = ({
 
         {/* Password field */}
         <PasswordField
-          error={formState.errors.email?.message}
+          error={formState.errors.password?.message}
           register={register}
         />
 
         {/* Password confirmation field */}
         <PasswordConfirmationField
-          error={formState.errors.email?.message}
+          error={formState.errors.passwordConfirmation?.message}
           register={register}
         />
       </VStack>

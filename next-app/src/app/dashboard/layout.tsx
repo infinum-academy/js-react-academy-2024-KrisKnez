@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <AuthRedirect to="/auth" condition="isLoggedIn">
+    <AuthRedirect to="/auth/login" condition="isLoggedIn">
       <Stack
         direction={{
           base: "column",
@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         <Sidebar />
         <Box flexGrow={1} overflowY="auto">
-          <Container maxW="container.xl" padding={8}>
+          <Container maxW="container.2xl" padding={8}>
             {children}
           </Container>
         </Box>

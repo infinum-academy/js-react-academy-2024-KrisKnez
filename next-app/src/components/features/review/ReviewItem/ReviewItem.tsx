@@ -56,7 +56,7 @@ export const ReviewItem = ({ review }: IReviewItemProps) => {
       </CardBody>
       <CardFooter>
         {userIsAuthor && (
-          <Button fontSize="sm" colorScheme="gray" onClick={handleDelete}>
+          <Button fontSize="sm" variant="light" onClick={handleDelete}>
             Remove
           </Button>
         )}

@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { Controller, useForm, UseFormReturn } from "react-hook-form";
 
 interface ReviewFormFields {
   comment: string;
@@ -33,9 +33,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit, isDisabled }) => {
       rating: 5,
     },
   });
-  const { handleSubmit, watch, setValue, register, formState } = form;
-
-  const rating = watch("rating");
+  const { handleSubmit, register, formState } = form;
 
   return (
     <VStack
@@ -60,10 +58,16 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onSubmit, isDisabled }) => {
       </FormControl>
       <HStack alignItems="flex-start" justifyContent="space-between">
         <Box p={2}>
-          <RatingInput
-            label={`${rating} / 5`}
-            value={rating}
-            onChange={(rating) => setValue("rating", rating)}
+          <Controller
+            name="rating"
+            control={form.control}
+            render={({ field: { value, onChange } }) => (
+              <RatingInput
+                label={`${value} / 5`}
+                value={value}
+                onChange={onChange}
+              />
+            )}
           />
         </Box>
         <Button type="submit" variant="light" isDisabled={isDisabled}>
